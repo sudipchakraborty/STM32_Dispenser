@@ -5,8 +5,18 @@
 #include "CAN_UART/CanUartPolling.hpp"
 #include "prj_disp.hpp"
 #include "Servo/Servo.hpp"
-//////////////////////////////////////
+///////////////////////////////////////////////////
+// user name: sudipchakraborty
 //Repo Token: "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"
+
+//STM32 cube store password:
+//--------------------------
+//Question 1: module name
+//Answer: Dispenser
+//
+//Question 2: product name
+//Answer: Dispenser Kitchen Robot
+////////////////////////////////////////////
 
 // UART handles
 extern UART_HandleTypeDef huart1;
