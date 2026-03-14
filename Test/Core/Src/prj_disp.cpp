@@ -16,8 +16,7 @@
 //
 //Question 2: product name
 //Answer: Dispenser Kitchen Robot
-////////////////////////////////////////////
-
+///////////////////////////////////////////////////
 // UART handles
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
@@ -45,35 +44,8 @@ extern "C" void prj_Disp_init(void)
 ///////////////////////////////////////////////
 extern "C" void prj_Disp_loop(void)
 {
-
-    // 🔥 VERY IMPORTANT: Call Process continuously
     can.Process();
 
-//    led1.Toggle();
-//    debug.print("Packet Received. Length: %d\r\n", count++);
-//    HAL_Delay(100);
-
-
-    ///////////////////////////////////
-//    uint8_t txPacket[14] =
-//    {
-//        0x66, 0x55, 0x0E,
-//        0x00, 0x00,
-//        0x01, 0x32,
-//        0x00, 0x00,
-//        0x1F,
-//        0x55, 0x5C,
-//        0x77, 0x88
-//    };
-//
-//        can.SendPacket(txPacket);
-     ///////////////////////////////////
-
-
-
-
-
-    // If packet received
     if (can.IsPacketReady())
     {
         led1.Toggle();
@@ -89,4 +61,8 @@ extern "C" void prj_Disp_loop(void)
         }
         debug.print("\r\n");
     }
+
+        led1.Toggle();
+
+
 }
