@@ -1,6 +1,6 @@
 #include "HX711.h"
 #include <stdlib.h>
-
+//____________________________________________________________________________________________________________________________
 HX711::HX711(GPIO_TypeDef* dout_port, uint16_t dout_pin,
              GPIO_TypeDef* sck_port, uint16_t sck_pin)
     : _dout_port(dout_port), _dout_pin(dout_pin),
@@ -12,13 +12,109 @@ HX711::HX711(GPIO_TypeDef* dout_port, uint16_t dout_pin,
         _runningSum += OFFSET;
     }
 }
-
+//____________________________________________________________________________________________________________________________
 void HX711::Init() {
     // GPIO Init is handled in MX_GPIO_Init, but we ensure SCK starts low
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
 }
+//____________________________________________________________________________________________________________________________
+bool HX711::GetWeight(long &value)
+{
+	long raw;
+	if(ReadRaw(raw))
+	{
+//    long raw = Get_Raw_Avj_Value();
 
-bool HX711::ReadRaw(long &value) {
+    // Updated calibration constants
+    const long OFFSET = 3280486;
+    const long SCALE  = 2333;   // ADC per gram
+
+    long weight = (raw - OFFSET) / SCALE;
+
+    // Dead zone ±2g
+    if (weight < 2 && weight > -2)
+        weight = 0;
+
+    value= weight;
+    return true;
+	}
+	return false;
+}
+//____________________________________________________________________________________________________________________________
+long HX711::Get_Raw_Avj_Value()
+{
+	 long value;
+    // Shift buffer left
+    for(int i = 0; i < BUFFER_SIZE - 1; i++)
+    {
+        _buffer[i] = _buffer[i + 1];
+    }
+
+    // Insert new value at end
+	if(ReadRaw(value))
+	{
+		_buffer[BUFFER_SIZE - 1] =value;
+	}
+
+    // Calculate average
+    long sum = 0;
+    for(int i = 0; i < BUFFER_SIZE; i++)
+    {
+        sum += _buffer[i];
+    }
+
+    long average = sum / BUFFER_SIZE;
+    return average;
+}
+//____________________________________________________________________________________________________________________________
+bool HX711::ReadRaw(long &value)
+{
+    long count = 0;
+    uint32_t timeout = HAL_GetTick();
+
+    // Wait for DOUT LOW (data ready)
+    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin)) {
+        if ((HAL_GetTick() - timeout) > 200)
+            return false;
+    }
+
+    __disable_irq();   // 🔥 IMPORTANT for stability
+
+    for (int i = 0; i < 24; i++)
+    {
+        // SCK HIGH
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+//        for(volatile int d=0; d<15; d++);  // small delay
+
+        count <<= 1;
+
+        // READ while HIGH (correct timing)
+        if (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+            count++;
+
+        // SCK LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        for(volatile int d=0; d<50; d++);
+    }
+
+    // 25th pulse (gain = 128)
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+    for(volatile int d=0; d<50; d++);
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+
+    __enable_irq();
+
+    // Sign extend
+    if (count & 0x800000)
+        count |= ~0xFFFFFF;
+
+    value = count;
+
+    return true;
+}
+//____________________________________________________________________________________________________________________________
+long HX711::Get_Raw() {
+
     long count = 0;
     uint32_t timeout = HAL_GetTick();
 
@@ -42,26 +138,20 @@ bool HX711::ReadRaw(long &value) {
 
     // Sign extend for 24-bit negative numbers
     if (count & 0x800000) count |= ~0xFFFFFF;
-
-    value = count;
-    return true;
+    return count;
 }
+//____________________________________________________________________________________________________________________________
+void HX711::TestSCK(uint16_t delayMs)
+{
+    while (1)
+    {
+        // HIGH
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+        HAL_Delay(delayMs);
 
-long HX711::GetWeightX100() {
-    long raw;
-    if (!ReadRaw(raw)) return -99999; // Error code
-
-    // Update Moving Average
-    _runningSum -= _buffer[_index];
-    _buffer[_index] = raw;
-    _runningSum += raw;
-    _index = (_index + 1) % BUFFER_SIZE;
-
-    long average = _runningSum / BUFFER_SIZE;
-    long weight_x100 = ((average - OFFSET) * 100L) / SCALE;
-
-    // Dead zone ±2g
-    if (weight_x100 < 200 && weight_x100 > -200) weight_x100 = 0;
-
-    return weight_x100;
+        // LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        HAL_Delay(delayMs);
+    }
 }
+//____________________________________________________________________________________________________________________________

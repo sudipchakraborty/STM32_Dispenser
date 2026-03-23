@@ -1,59 +1,58 @@
 #include "Servo.hpp"
-#include <cstdlib>
-
-extern TIM_HandleTypeDef htim1;
-
+//____________________________________________________________________________________________________________________
 
 Servo::Servo(TIM_HandleTypeDef* timer, uint32_t ch)
 {
     htim = timer;
     channel = ch;
 }
-
+//____________________________________________________________________________________________________________________
 void Servo::init()
 {
     HAL_TIM_PWM_Start(htim, channel);
-	htim1.Init.Prescaler = 8-1;
-	htim1.Init.Period = 20000-1;
-	HAL_TIM_Base_Init(&htim1);
-	HAL_TIM_PWM_Init(&htim1);
 }
-
+//____________________________________________________________________________________________________________________
 void Servo::start()
 {
     HAL_TIM_PWM_Start(htim, channel);
 }
-
+//____________________________________________________________________________________________________________________
 void Servo::stop()
 {
     HAL_TIM_PWM_Stop(htim, channel);
 }
-
+//____________________________________________________________________________________________________________________
+// ✅ CALIBRATED FUNCTION
 void Servo::setAngle(float angle)
 {
     if(angle < 0) angle = 0;
     if(angle > 180) angle = 180;
 
-    uint16_t pulse = minPulse + (angle / 180.0f) * (maxPulse - minPulse);
+    // Your calibrated values
+    uint16_t minPulse = 70;
+    uint16_t maxPulse = 435;
+
+    uint16_t pulse = minPulse +
+        (angle / 180.0f) * (maxPulse - minPulse);
 
     __HAL_TIM_SET_COMPARE(htim, channel, pulse);
 }
-
+//____________________________________________________________________________________________________________________
 void Servo::setSpeed(int speed)
 {
-    // speed = -100 to +100
-
-    uint16_t pulse = 1500 + speed * 5;
+    // Not recommended for SG90 (ignore or remove)
+    uint16_t mid = (70 + 435) / 2;
+    uint16_t pulse = mid + speed * 2;
 
     __HAL_TIM_SET_COMPARE(htim, channel, pulse);
 }
-
+//____________________________________________________________________________________________________________________
 void Servo::TestSweep(void)
 {
     while (1)
     {
         // 0 → 180
-        for(int angle = 0; angle <= 180; angle++)
+        for(int angle = 0; angle <= 180; angle += 2)
         {
             setAngle(angle);
             HAL_Delay(20);
@@ -62,7 +61,7 @@ void Servo::TestSweep(void)
         HAL_Delay(500);
 
         // 180 → 0
-        for(int angle = 180; angle >= 0; angle--)
+        for(int angle = 180; angle >= 0; angle -= 2)
         {
             setAngle(angle);
             HAL_Delay(20);
@@ -71,3 +70,44 @@ void Servo::TestSweep(void)
         HAL_Delay(500);
     }
 }
+//____________________________________________________________________________________________________________________
+void Servo::open(float angle)
+{
+    moveTo(angle, 1, 20);  // slow smooth motion
+}
+//____________________________________________________________________________________________________________________
+void Servo::close()
+{
+    moveTo(0, 1, 20);
+}
+//____________________________________________________________________________________________________________________
+// Move slowly to target angle
+void Servo::moveTo(float targetAngle, uint8_t step, uint16_t delayMs)
+{
+    if(targetAngle < 0) targetAngle = 0;
+    if(targetAngle > 180) targetAngle = 180;
+
+    if(currentAngle < targetAngle)
+    {
+        for(float a = currentAngle; a <= targetAngle; a += step)
+        {
+            setAngle(a);
+            HAL_Delay(delayMs);
+        }
+    }
+    else
+    {
+        for(float a = currentAngle; a >= targetAngle; a -= step)
+        {
+            setAngle(a);
+            HAL_Delay(delayMs);
+        }
+    }
+
+    currentAngle = targetAngle;
+}
+//____________________________________________________________________________________________________________________
+
+
+
+

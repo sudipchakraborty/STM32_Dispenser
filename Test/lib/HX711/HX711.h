@@ -8,14 +8,17 @@ public:
     // Constants from your calibration
     static constexpr long SCALE = 2376L;
     static constexpr long OFFSET = 1852778L;
-    static constexpr int BUFFER_SIZE = 20;
+    static constexpr int BUFFER_SIZE = 10;
 
     HX711(GPIO_TypeDef* dout_port, uint16_t dout_pin,
           GPIO_TypeDef* sck_port, uint16_t sck_pin);
 
     void Init();
     bool ReadRaw(long &value);
-    long GetWeightX100(); // Returns weight * 100 (e.g., 1250 for 12.50g)
+    long Get_Raw();
+    long Get_Raw_Avj_Value(); // Returns weight * 100 (e.g., 1250 for 12.50g)
+    void TestSCK(uint16_t delayMs);
+    bool GetWeight(long &value);
 
 private:
     GPIO_TypeDef* _dout_port;

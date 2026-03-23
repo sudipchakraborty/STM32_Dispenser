@@ -1,22 +1,22 @@
 #ifndef SERVO_HPP
 #define SERVO_HPP
 
-#include "stm32f0xx_hal.h"
+#include "stm32f0xx_hal.h"     // ✅ REQUIRED (HAL + TIM + Delay)
 #include "stm32f0xx_hal_tim.h"
-#include <stdint.h>
+#include <cstdint>             // ✅ for uint8_t, uint16_t, uint32_t
 
 class Servo
 {
 private:
-
     TIM_HandleTypeDef* htim;
     uint32_t channel;
 
-    uint16_t minPulse = 1000;
-    uint16_t maxPulse = 2000;
+    float currentAngle = 0;
+
+    uint16_t minPulse = 70;   // calibrated
+    uint16_t maxPulse = 435;
 
 public:
-
     Servo(TIM_HandleTypeDef* timer, uint32_t ch);
 
     void init();
@@ -25,6 +25,11 @@ public:
 
     void setAngle(float angle);
     void setSpeed(int speed);
+
+    void moveTo(float targetAngle, uint8_t step = 1, uint16_t delayMs = 20);
+    void open(float angle);
+    void close();
+
     void TestSweep(void);
 };
 

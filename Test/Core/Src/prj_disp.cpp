@@ -5,6 +5,7 @@
 #include "CAN_UART/CanUartPolling.hpp"
 #include "prj_disp.hpp"
 #include "Servo/Servo.hpp"
+#include "HX711/HX711.h"
 ///////////////////////////////////////////////////
 // user name: sudipchakraborty
 //Repo Token: "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"
@@ -34,35 +35,70 @@ static Debug debug(&huart2);
 // LEDs
 static LED led1(GPIOB, GPIO_PIN_5);
 static LED led2(GPIOB, GPIO_PIN_6);
+
+// HX711 instance
+HX711 hx(GPIOB, GPIO_PIN_11,   // DOUT
+         GPIOB, GPIO_PIN_10);  // SCK
 //////////////////////////////////////////////
+
 extern "C" void prj_Disp_init(void)
 {
+	hx.Init();
+
 	servo1.init();
     debug.print("--- System Started (Polling Mode) ---\r\n");
+    servo1.start();
+    hx.Init();
+    debug.print("HX711 Initialized\r\n");
+
     prj_Disp_loop();
 }
 ///////////////////////////////////////////////
 extern "C" void prj_Disp_loop(void)
 {
-    can.Process();
+	long value;
 
-    if (can.IsPacketReady())
-    {
+	while(1)
+	{
+		if(hx.GetWeight(value))
+		{
+			debug.print("ADC: %ld\r\n",value);
+		}
+
+
+
+
+
+//		servo1.setAngle(180);
+//
+//		servo1.open(90);   // open slowly to 120°
+//		HAL_Delay(2000);
+//
+//		servo1.close();     // slowly go back to 0°
+//		HAL_Delay(2000);
+
+//    can.Process();
+//
+//    if (can.IsPacketReady())
+//    {
+//        led1.Toggle();
+//        HAL_Delay(100);
+//        uint8_t* pkt = can.GetPacket();
+//        uint8_t len = can.GetPacketLength();
+//
+//        debug.print("Packet Received. Length: %d\r\n", len);
+//
+//        for (uint8_t i = 0; i < len; i++)
+//        {
+//            debug.print("%02X ", pkt[i]);
+//        }
+//        debug.print("\r\n");
+//    }
+
         led1.Toggle();
-        HAL_Delay(100);
-        uint8_t* pkt = can.GetPacket();
-        uint8_t len = can.GetPacketLength();
+//        HAL_Delay(10);
+//        debug.print("--- System  Running.. ---\r\n");
 
-        debug.print("Packet Received. Length: %d\r\n", len);
-
-        for (uint8_t i = 0; i < len; i++)
-        {
-            debug.print("%02X ", pkt[i]);
-        }
-        debug.print("\r\n");
-    }
-
-        led1.Toggle();
-
-
+	}
 }
+
