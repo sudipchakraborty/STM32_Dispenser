@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "main.h"
 #include "LED/LED.h"
 #include "Debug/Debug.h"
@@ -6,6 +7,7 @@
 #include "prj_disp.hpp"
 #include "Servo/Servo.hpp"
 #include "HX711/HX711.h"
+#include "CAN/can.hpp"
 ///////////////////////////////////////////////////
 // user name: sudipchakraborty
 //Repo Token: "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"
@@ -24,6 +26,7 @@ extern UART_HandleTypeDef huart2;
 
 // Polling CAN object
 CanUartPolling can(&huart1);
+CANProtocol canP;
 
 // Servo motor
 extern TIM_HandleTypeDef htim1;
@@ -52,6 +55,7 @@ extern "C" void prj_Disp_init(void)
     debug.print("HX711 Initialized\r\n");
 
     prj_Disp_loop();
+    servo1.close();
 }
 ///////////////////////////////////////////////
 extern "C" void prj_Disp_loop(void)
@@ -60,45 +64,78 @@ extern "C" void prj_Disp_loop(void)
 
 	while(1)
 	{
-		if(hx.GetWeight(value))
-		{
-			debug.print("ADC: %ld\r\n",value);
-		}
+		uint8_t binaryBuffer[64];
 
-
-
-
-
-//		servo1.setAngle(180);
-//
-//		servo1.open(90);   // open slowly to 120°
-//		HAL_Delay(2000);
-//
-//		servo1.close();     // slowly go back to 0°
-//		HAL_Delay(2000);
-
-//    can.Process();
-//
-//    if (can.IsPacketReady())
-//    {
-//        led1.Toggle();
-//        HAL_Delay(100);
-//        uint8_t* pkt = can.GetPacket();
-//        uint8_t len = can.GetPacketLength();
-//
-//        debug.print("Packet Received. Length: %d\r\n", len);
-//
-//        for (uint8_t i = 0; i < len; i++)
-//        {
-//            debug.print("%02X ", pkt[i]);
-//        }
-//        debug.print("\r\n");
-//    }
-
-        led1.Toggle();
-//        HAL_Delay(10);
-//        debug.print("--- System  Running.. ---\r\n");
-
+	    if(can.received())
+			{
+	    		int len=can.ConvertAsciiToHex(binaryBuffer);
+	    		Packet_t pkt;
+	    		if(canP.Parse(binaryBuffer, len, &pkt))
+	    		{
+	    			if(pkt.address==MyAddress)
+	    			{
+	    				process_command(pkt);
+	    			}
+	    			 led1.Toggle();
+	    		}
+	    		can.reset();
+			}
 	}
 }
+//______________________________________________________________________________________________________________________
+void process_command(Packet_t pkt)
+{
+	switch(pkt.rw)
+	{
+	case Operation::read:
 
+		break;
+	////////////////////////
+	case Operation::write:
+
+		break;
+	///////////////////////
+	case Operation::execute:
+		DispenseWeight(250, 60);
+//		HAL_Delay(5000);
+		break;
+	///////////////////////
+	default:
+		break;
+	//////////////////////
+	}
+}
+//______________________________________________________________________________________________________________________
+char DispenseWeight(long target_grams, int OpenInDeg)
+{
+    long startWeight = 0;
+    long currentWeight = 0;
+
+    // Read initial weight
+    debug.print("Dispense Weight: %ld\r\n",target_grams);
+
+    hx.GetWeight(startWeight);
+	debug.print("Initial Weight: %ld\r\n",startWeight);
+
+    long targetFinal = startWeight - target_grams;
+    debug.print("Target Weight Value: %ld\r\n",targetFinal);
+
+    // Open valve
+    servo1.open(OpenInDeg);
+    debug.print("Valve Open(Deg.): %ld\r\n",OpenInDeg);
+
+	while (1)
+	{
+		hx.GetWeight(currentWeight);
+		debug.print("current Weight: %ld\r\n",currentWeight);
+
+		// Stop slightly early to avoid overshoot
+		if (currentWeight <= targetFinal)
+		{
+			servo1.close();
+			debug.print(" Valve Closed");
+			break;
+		}
+	}
+ }
+//______________________________________________________________________________________________________________________

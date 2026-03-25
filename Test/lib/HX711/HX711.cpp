@@ -1,6 +1,5 @@
 #include "HX711.h"
 #include <stdlib.h>
-//____________________________________________________________________________________________________________________________
 HX711::HX711(GPIO_TypeDef* dout_port, uint16_t dout_pin,
              GPIO_TypeDef* sck_port, uint16_t sck_pin)
     : _dout_port(dout_port), _dout_pin(dout_pin),
@@ -18,27 +17,30 @@ void HX711::Init() {
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
 }
 //____________________________________________________________________________________________________________________________
+
+//____________________________________________________________________________________________________________________________
 bool HX711::GetWeight(long &value)
 {
-	long raw;
-	if(ReadRaw(raw))
-	{
-//    long raw = Get_Raw_Avj_Value();
+    long raw;
 
-    // Updated calibration constants
-    const long OFFSET = 3280486;
-    const long SCALE  = 2333;   // ADC per gram
+    if (ReadRaw(raw))
+    {
+        // === Updated calibration (based on your new data) ===
+        const long OFFSET = 1660567;   // 0g value
+        const long SCALE  = 1198;      // ADC per gram
 
-    long weight = (raw - OFFSET) / SCALE;
+        // Apply calibration with rounding
+        long weight = (raw - OFFSET + (SCALE / 2)) / SCALE;
 
-    // Dead zone ±2g
-    if (weight < 2 && weight > -2)
-        weight = 0;
+        // Dead zone ±2g
+        if (weight < 2 && weight > -2)
+            weight = 0;
 
-    value= weight;
-    return true;
-	}
-	return false;
+        value = weight;
+        return true;
+    }
+
+    return false;
 }
 //____________________________________________________________________________________________________________________________
 long HX711::Get_Raw_Avj_Value()
@@ -84,7 +86,6 @@ bool HX711::ReadRaw(long &value)
     {
         // SCK HIGH
         HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
-//        for(volatile int d=0; d<15; d++);  // small delay
 
         count <<= 1;
 
@@ -94,12 +95,12 @@ bool HX711::ReadRaw(long &value)
 
         // SCK LOW
         HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
-        for(volatile int d=0; d<50; d++);
+//        for(volatile int d=0; d<10; d++);
     }
 
     // 25th pulse (gain = 128)
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
-    for(volatile int d=0; d<50; d++);
+    for(volatile int d=0; d<50; d++); // This delay is very crusial , if ommit reult -1 or 0 appear
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
 
     __enable_irq();
@@ -109,6 +110,8 @@ bool HX711::ReadRaw(long &value)
         count |= ~0xFFFFFF;
 
     value = count;
+
+    if((count ==-1)||(count==0)) return false;
 
     return true;
 }

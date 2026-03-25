@@ -17,6 +17,11 @@ public:
     uint8_t* GetPacket();
     uint8_t GetPacketLength();
     bool SendPacket(uint8_t* buffer);
+    bool TestSend();
+    bool received();
+    bool reset();
+    uint16_t ConvertAsciiToHex(uint8_t* outBuf);
+    uint8_t HexCharToNibble(uint8_t c);
 
 private:
     UART_HandleTypeDef* _huart;
@@ -25,6 +30,8 @@ private:
     uint8_t rxIndex = 0;
     uint8_t expectedLength = 0;
     bool packetReady = false;
+    uint32_t lastRxTime = 0;
+    bool rxActive = false;
 };
 
 #endif
