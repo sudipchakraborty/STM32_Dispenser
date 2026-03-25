@@ -43,17 +43,14 @@ static LED led2(GPIOB, GPIO_PIN_6);
 HX711 hx(GPIOB, GPIO_PIN_11,   // DOUT
          GPIOB, GPIO_PIN_10);  // SCK
 //////////////////////////////////////////////
-
 extern "C" void prj_Disp_init(void)
 {
 	hx.Init();
-
 	servo1.init();
     debug.print("--- System Started (Polling Mode) ---\r\n");
     servo1.start();
     hx.Init();
     debug.print("HX711 Initialized\r\n");
-
     prj_Disp_loop();
     servo1.close();
 }
@@ -61,11 +58,9 @@ extern "C" void prj_Disp_init(void)
 extern "C" void prj_Disp_loop(void)
 {
 	long value;
-
 	while(1)
 	{
 		uint8_t binaryBuffer[64];
-
 	    if(can.received())
 			{
 	    		int len=can.ConvertAsciiToHex(binaryBuffer);
