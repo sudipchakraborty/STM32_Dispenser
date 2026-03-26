@@ -7,7 +7,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define MyAddress 			101
+#define MyAddress 			109
 
 #define PIC_DISP_3X3_GRAINS		101
 #define PIC_DISP_3X3_LIQUID		102
@@ -33,6 +33,8 @@ void prj_Disp_init(void);
 void prj_Disp_loop(void);
 char DispenseWeight(long target_grams, int OpenInDeg);
 void process_command(Packet_t pkt);
+void process_Real_Hardware();
+void Demo_Process();
 
 #ifdef __cplusplus
 }

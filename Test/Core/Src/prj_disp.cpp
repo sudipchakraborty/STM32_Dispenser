@@ -8,6 +8,7 @@
 #include "Servo/Servo.hpp"
 #include "HX711/HX711.h"
 #include "CAN/can.hpp"
+#include "Helper/Helper.hpp"
 ///////////////////////////////////////////////////
 // user name: sudipchakraborty
 //Repo Token: "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"
@@ -51,35 +52,83 @@ extern "C" void prj_Disp_init(void)
     servo1.start();
     hx.Init();
     debug.print("HX711 Initialized\r\n");
-    prj_Disp_loop();
     servo1.close();
+    ////////////////
+    Packet_t pkt = {0};
+
+    pkt.transtype = 0x00;
+    pkt.cast = 0x01;
+    pkt.address = 0x6D;
+    pkt.rw = 0x02; // Execute
+    pkt.command = 0x00;
+
+    pkt.data[0] = 0x00;
+    pkt.data[1] = 0x64;  // 200
+    pkt.dataLen = 2;
+
+    uint8_t buffer[64];
+
+    uint16_t len = canP.BuildPacket(&pkt, buffer);
+
+
+
+
+	Demo_Process();
+
+    while(1)
+	{
+//		process_Real_Hardware();
+
+
+	}
 }
-///////////////////////////////////////////////
-extern "C" void prj_Disp_loop(void)
+//______________________________________________________________________________________________________________________
+void Demo_Process()
+{
+	uint8_t bfr[100];
+
+	int len=canP.Get_Sample_Dispense_Packet(bfr);
+	debug.print("Demo Packet Received..\r\n");
+
+	Packet_t pkt;
+
+	if(canP.ParseError(bfr, len, &pkt)){
+	}
+	else
+	{
+		if(pkt.address==MyAddress)
+		{
+			process_command(pkt);
+		}
+	}
+}
+//______________________________________________________________________________________________________________________
+void process_Real_Hardware()
 {
 	long value;
-	while(1)
-	{
-		uint8_t binaryBuffer[64];
-	    if(can.received())
+	uint8_t binaryBuffer[64];
+
+	if(can.received())
+		{
+			int len=can.ConvertAsciiToHex(binaryBuffer);
+			Packet_t pkt;
+			if(canP.ParseError(binaryBuffer, len, &pkt))
 			{
-	    		int len=can.ConvertAsciiToHex(binaryBuffer);
-	    		Packet_t pkt;
-	    		if(canP.Parse(binaryBuffer, len, &pkt))
-	    		{
-	    			if(pkt.address==MyAddress)
-	    			{
-	    				process_command(pkt);
-	    			}
-	    			 led1.Toggle();
-	    		}
-	    		can.reset();
+				if(pkt.address==MyAddress)
+				{
+					process_command(pkt);
+				}
+				 led1.Toggle();
 			}
-	}
+			can.reset();
+		}
+
 }
 //______________________________________________________________________________________________________________________
 void process_command(Packet_t pkt)
 {
+	uint16_t val;
+
 	switch(pkt.rw)
 	{
 	case Operation::read:
@@ -91,8 +140,8 @@ void process_command(Packet_t pkt)
 		break;
 	///////////////////////
 	case Operation::execute:
-		DispenseWeight(250, 60);
-//		HAL_Delay(5000);
+		val=ReadUInt16_BE(pkt.data);
+		DispenseWeight(val, 60);
 		break;
 	///////////////////////
 	default:

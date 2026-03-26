@@ -8,6 +8,11 @@
 
 #define KBUS_MAX_PACKET 128
 
+#define PREAMBLE_SIZE 2
+#define LENGTH_SIZE   1
+#define CRC_SIZE      2
+#define POSTAMBLE_SIZE 2
+
 typedef struct
 {
     bool valid;
@@ -27,6 +32,17 @@ typedef struct
 
 } Packet_t;
 ////////////////////////////////
+typedef enum {
+	source_buffer_destination_empty=0,
+	packet_length_minium=1,
+	preambles_not_found=2,
+	postambles_not_found=3,
+	packet_length_exceeds=4,
+	CRC_error=5
+
+}Error;
+
+
 typedef enum
 {
     read = 0,
@@ -40,7 +56,11 @@ typedef enum
 class CANProtocol
 {
 public:
-    bool Parse(uint8_t* buffer, uint16_t len, Packet_t* pkt);
+    bool ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt);
+    int Get_Sample_Dispense_Packet(uint8_t* buffer);
+    unsigned short crc16_xmodem(const unsigned char *data, int len);
+    uint16_t BuildPacket(const Packet_t* pkt, uint8_t* buffer);
+
 };
 
 #endif
