@@ -54,52 +54,9 @@ extern "C" void prj_Disp_init(void)
     debug.print("HX711 Initialized\r\n");
     servo1.close();
     ////////////////
-    Packet_t pkt = {0};
-
-    pkt.transtype = 0x00;
-    pkt.cast = 0x01;
-    pkt.address = 0x6D;
-    pkt.rw = 0x02; // Execute
-    pkt.command = 0x00;
-
-    pkt.data[0] = 0x00;
-    pkt.data[1] = 0x64;  // 200
-    pkt.dataLen = 2;
-
-    uint8_t buffer[64];
-
-    uint16_t len = canP.BuildPacket(&pkt, buffer);
-
-
-
-
-	Demo_Process();
-
     while(1)
 	{
-//		process_Real_Hardware();
-
-
-	}
-}
-//______________________________________________________________________________________________________________________
-void Demo_Process()
-{
-	uint8_t bfr[100];
-
-	int len=canP.Get_Sample_Dispense_Packet(bfr);
-	debug.print("Demo Packet Received..\r\n");
-
-	Packet_t pkt;
-
-	if(canP.ParseError(bfr, len, &pkt)){
-	}
-	else
-	{
-		if(pkt.address==MyAddress)
-		{
-			process_command(pkt);
-		}
+		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________

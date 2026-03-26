@@ -1,9 +1,5 @@
 #include "can.hpp"
 
-
-
-
-
 //_________________________________________________________________________________________________________________________
 bool CANProtocol::ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt)
 {
@@ -92,7 +88,6 @@ unsigned short CANProtocol::crc16_xmodem(const unsigned char *data, int len) {
             }
         }
     }
-
     return crc;
 }
 //_________________________________________________________________________________________________________________________
@@ -144,6 +139,45 @@ uint16_t CANProtocol::BuildPacket(const Packet_t* pkt, uint8_t* buffer)
     return index; // total bytes
 }
 //_________________________________________________________________________________________________________________________
+uint16_t CANProtocol::Get_Demo_Packet(uint8_t* buffer)
+{
+	Packet_t pkt = {0};
+
+	pkt.transtype = 0x00;
+	pkt.cast = 0x01;
+	pkt.address = 0x6D;
+	pkt.rw = 0x02; // Execute
+	pkt.command = 0x00;
+
+	pkt.data[0] = 0x00;
+	pkt.data[1] = 0x64;  // 200
+	pkt.dataLen = 2;
+
+	uint16_t len = BuildPacket(&pkt, buffer);
+
+	return len;
+}
+//_________________________________________________________________________________________________________________________
+void CANProtocol::Demo_Process()
+{
+	uint8_t bfr[100];
+
+	int len=Get_Sample_Dispense_Packet(bfr);
+
+	Packet_t pkt;
+
+	if(ParseError(bfr, len, &pkt)){
+	}
+	else
+	{
+		if(pkt.address==109)
+		{
+//			process_command(pkt);
+		}
+	}
+}
+//_________________________________________________________________________________________________________________________
+
 
 
 
