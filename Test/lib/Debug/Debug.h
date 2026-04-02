@@ -11,7 +11,6 @@ public:
 
     void print(const char* format, ...);
     void test();   // 👈 add this
-
 private:
     UART_HandleTypeDef* _huart;
     uint32_t counter = 0;  // 👈 internal counter

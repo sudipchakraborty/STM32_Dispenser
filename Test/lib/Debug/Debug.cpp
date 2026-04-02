@@ -1,7 +1,8 @@
 #include "Debug.h"
-
+#include <stdio.h>
+/////////////////////////////
 Debug::Debug(UART_HandleTypeDef* huart) : _huart(huart) {}
-
+//_______________________________________________________________________________________________________________
 void Debug::print(const char* format, ...) {
     char buffer[128];
     va_list args;
@@ -14,9 +15,12 @@ void Debug::print(const char* format, ...) {
         HAL_UART_Transmit(_huart, (uint8_t*)buffer, len, 100);
     }
 }
-
+//_______________________________________________________________________________________________________________
 // 👇 Test function
 void Debug::test() {
     counter++;
     print("Debug Count: %lu\r\n", counter);
 }
+//_______________________________________________________________________________________________________________
+
+

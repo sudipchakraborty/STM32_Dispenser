@@ -126,7 +126,7 @@ uint8_t CanUartPolling::HexCharToNibble(uint8_t c)
     return 0xFF; // invalid
 }
 //_____________________________________________________________________________________________________________________
-bool CanUartPolling::reset()
+void CanUartPolling::reset()
 {
 	rxIndex = 0;
 }

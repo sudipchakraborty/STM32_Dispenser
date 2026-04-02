@@ -1,4 +1,8 @@
 #include "can.hpp"
+#include "Debug/Debug.h"
+
+extern UART_HandleTypeDef huart2;
+extern Debug debug(&huart2);
 
 //_________________________________________________________________________________________________________________________
 bool CANProtocol::ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt)
@@ -48,6 +52,38 @@ bool CANProtocol::ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt)
     return false;
 }
 //_________________________________________________________________________________________________________________________
+void CANProtocol::printPacket(const Packet_t* pkt)
+{
+    if (pkt == nullptr) {
+        debug.print("Packet: NULL\r\n");
+        return;
+    }
+
+    debug.print("\r\n========== PACKET DUMP ==========\r\n");
+
+    debug.print("Valid      : %s\r\n", pkt->valid ? "TRUE" : "FALSE");
+    debug.print("Length     : %u\r\n", pkt->length);
+    debug.print("Trans Type : 0x%02X\r\n", pkt->transtype);
+    debug.print("Cast       : 0x%02X\r\n", pkt->cast);
+
+    debug.print("Address    : 0x%04X\r\n", pkt->address);
+    debug.print("RW         : %s\r\n", pkt->rw ? "WRITE" : "READ");
+    debug.print("Command    : 0x%02X\r\n", pkt->command);
+
+    debug.print("Data Length: %u\r\n", pkt->dataLen);
+
+    // Print data bytes
+    debug.print("Data       : ");
+    for (uint8_t i = 0; i < pkt->dataLen; i++) {
+    	debug.print("%02X ", pkt->data[i]);
+    }
+    debug.print("\r\n");
+
+    debug.print("CRC        : 0x%04X\r\n", pkt->crc);
+
+    debug.print("=================================\r\n\r\n");
+}
+//_______________________________________________________________________________________________________________
 int CANProtocol::Get_Sample_Dispense_Packet(uint8_t* buffer)
 {
     if (!buffer) return 0;

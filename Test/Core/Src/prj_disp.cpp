@@ -67,18 +67,28 @@ void process_Real_Hardware()
 
 	if(can.received())
 		{
+		 	debug.print("Data Received\r\n");
 			int len=can.ConvertAsciiToHex(binaryBuffer);
 			Packet_t pkt;
 			if(canP.ParseError(binaryBuffer, len, &pkt))
+			{
+				debug.print("Packet Receive Error \r\n");
+			}
+			else
 			{
 				if(pkt.address==MyAddress)
 				{
 					process_command(pkt);
 				}
-				 led1.Toggle();
 			}
+			canP.printPacket(&pkt);
 			can.reset();
 		}
+	else
+	{
+		led1.Toggle();
+
+	}
 
 }
 //______________________________________________________________________________________________________________________

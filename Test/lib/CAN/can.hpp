@@ -62,6 +62,7 @@ public:
     uint16_t BuildPacket(const Packet_t* pkt, uint8_t* buffer);
     uint16_t Get_Demo_Packet(uint8_t* buffer);
     void Demo_Process();
+    void printPacket(const Packet_t* pkt);
 };
 
 #endif
