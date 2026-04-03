@@ -9,6 +9,7 @@
 #include "HX711/HX711.h"
 #include "CAN/can.hpp"
 #include "Helper/Helper.hpp"
+#include "Delay/delay.hpp"
 ///////////////////////////////////////////////////
 // user name: sudipchakraborty
 //Repo Token: "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"
@@ -87,6 +88,8 @@ void process_Real_Hardware()
 	else
 	{
 		led1.Toggle();
+		debug.test();
+		Delay::ms(100);   // 1 second delay
 
 	}
 
