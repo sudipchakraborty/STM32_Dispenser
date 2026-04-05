@@ -7,5 +7,9 @@ uint16_t ReadUInt16_BE(const uint8_t* buffer);
 uint16_t ReadUInt16_LE(const uint8_t* buffer);
 void WriteUInt16_BE(uint8_t* buffer, uint16_t value);
 void WriteUInt16_LE(uint8_t* buffer, uint16_t value);
+void BufferToAsciiString(const uint8_t* data,
+                         uint16_t length,
+                         char* outStr,
+                         uint16_t maxLen);
 
 #endif

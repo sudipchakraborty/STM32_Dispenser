@@ -65,31 +65,48 @@ void process_Real_Hardware()
 {
 	long value;
 	uint8_t binaryBuffer[64];
+	char asciiBuffer[200];
 
-	if(can.received())
+	if(can.received_CountBased())
 		{
-		 	debug.print("Data Received\r\n");
-			int len=can.ConvertAsciiToHex(binaryBuffer);
-			Packet_t pkt;
-			if(canP.ParseError(binaryBuffer, len, &pkt))
-			{
-				debug.print("Packet Receive Error \r\n");
-			}
-			else
-			{
-				if(pkt.address==MyAddress)
+		    debug.print("=================================\r\n");
+
+
+
+
+//		 	debug.print("Data Received\r\n");
+		 	uint16_t len = can.GetRawBuffer(binaryBuffer, sizeof(binaryBuffer));
+
+		 	 for(int i=0;i<len;i++)
 				{
-					process_command(pkt);
+		 		 	 debug.print("%02X ", binaryBuffer[i]);
 				}
-			}
-			canP.printPacket(&pkt);
+		 	debug.print("\r\n");
+
+		    BufferToAsciiString(binaryBuffer, len,asciiBuffer,sizeof(asciiBuffer));
+		 	debug.print(asciiBuffer);
+
+//			Packet_t pkt;
+//			if(canP.ParseError(binaryBuffer, len, &pkt))
+//			{
+//				debug.print("Packet Receive Error \r\n");
+//			}
+//			else
+//			{
+//				if(pkt.address==MyAddress)
+//				{
+//					process_command(pkt);
+//				}
+//			}
+//			canP.printPacket(&pkt);
+			debug.print("\r\n=================================\r\n\r\n");
 			can.reset();
 		}
 	else
 	{
 		led1.Toggle();
-		debug.test();
-		Delay::ms(100);   // 1 second delay
+	//	debug.test();
+	//	Delay::ms(100);   // 1 second delay
 
 	}
 

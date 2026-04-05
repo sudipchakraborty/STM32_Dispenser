@@ -78,7 +78,7 @@ bool CanUartPolling::received()
     // 🔥 Check timeout condition (10 ms)
     if (rxActive)
     {
-        if ((HAL_GetTick() - lastRxTime) > 10)
+        if ((HAL_GetTick() - lastRxTime) > 50)
         {
             // Reception finished
             rxActive = false;
@@ -86,6 +86,73 @@ bool CanUartPolling::received()
         }
     }
     return false;  // ❌ Not finished yet
+}
+//_____________________________________________________________________________________________________________________
+bool CanUartPolling::received_CountBased()
+{
+
+	    uint8_t byte;
+
+	    if (HAL_UART_Receive(_huart, &byte, 1, 1) != HAL_OK)
+	        return false;
+
+	    // Shift buffer if overflow
+	    if (rxIndex >= KBUS_MAX_PACKET)
+	        rxIndex = 0;
+
+	    rxBuffer[rxIndex++] = byte;
+
+	    // 🔥 SEARCH HEADER ANYWHERE
+	    for (uint16_t i = 0; i < rxIndex - 1; i++)
+	    {
+	        if (rxBuffer[i] == 0x66 && rxBuffer[i + 1] == 0x55)
+	        {
+	            // Shift buffer to start from header
+	            uint16_t newLen = rxIndex - i;
+
+	            memmove(rxBuffer, &rxBuffer[i], newLen);
+	            rxIndex = newLen;
+
+	            break;
+	        }
+	    }
+
+	    // Get length
+	    if (rxIndex >= 3)
+	    {
+	        expectedLength = rxBuffer[2];
+
+	        if (expectedLength < 3 || expectedLength > KBUS_MAX_PACKET)
+	        {
+	            rxIndex = 0;
+	            expectedLength = 0;
+	            return false;
+	        }
+	    }
+
+	    // Full packet received
+	    if (expectedLength > 0 && rxIndex >= expectedLength)
+	    {
+	        return true;
+	    }
+
+	    return false;
+
+}
+//_____________________________________________________________________________________________________________________
+uint16_t CanUartPolling::GetRawBuffer(uint8_t* outBuf, uint16_t maxLen)
+{
+    if (rxIndex == 0)
+        return 0;
+
+    uint16_t copyLen = (rxIndex < maxLen) ? rxIndex : maxLen;
+
+    memcpy(outBuf, rxBuffer, copyLen);
+
+    // Reset after copying
+    rxIndex = 0;
+
+    return copyLen;
 }
 //_____________________________________________________________________________________________________________________
 uint16_t CanUartPolling::ConvertAsciiToHex(uint8_t* outBuf)

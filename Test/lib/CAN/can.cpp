@@ -59,7 +59,7 @@ void CANProtocol::printPacket(const Packet_t* pkt)
         return;
     }
 
-    debug.print("\r\n========== PACKET DUMP ==========\r\n");
+//    debug.print("\r\n========== PACKET DUMP ==========\r\n");
 
     debug.print("Valid      : %s\r\n", pkt->valid ? "TRUE" : "FALSE");
     debug.print("Length     : %u\r\n", pkt->length);
@@ -81,7 +81,7 @@ void CANProtocol::printPacket(const Packet_t* pkt)
 
     debug.print("CRC        : 0x%04X\r\n", pkt->crc);
 
-    debug.print("=================================\r\n\r\n");
+//    debug.print("=================================\r\n\r\n");
 }
 //_______________________________________________________________________________________________________________
 int CANProtocol::Get_Sample_Dispense_Packet(uint8_t* buffer)

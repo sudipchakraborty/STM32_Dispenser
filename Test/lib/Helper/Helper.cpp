@@ -22,7 +22,7 @@ void WriteUInt16_BE(uint8_t* buffer, uint16_t value)
     buffer[0] = (value >> 8) & 0xFF;  // High byte
     buffer[1] = value & 0xFF;         // Low byte
 }
-
+//________________________________________________________________________________________________________________
 // Little Endian (Low byte first)
 void WriteUInt16_LE(uint8_t* buffer, uint16_t value)
 {
@@ -31,3 +31,36 @@ void WriteUInt16_LE(uint8_t* buffer, uint16_t value)
     buffer[0] = value & 0xFF;         // Low byte
     buffer[1] = (value >> 8) & 0xFF;  // High byte
 }
+//________________________________________________________________________________________________________________
+void BufferToAsciiString(const uint8_t* data,
+                         uint16_t length,
+                         char* outStr,
+                         uint16_t maxLen)
+{
+    uint16_t outIndex = 0;
+
+    for (uint16_t i = 0; i < length; i++)
+    {
+        if (outIndex + 3 >= maxLen) break; // "FF "
+
+        uint8_t byte = data[i];
+
+        // High nibble
+        uint8_t high = (byte >> 4) & 0x0F;
+        outStr[outIndex++] = (high < 10) ? ('0' + high) : ('A' + high - 10);
+
+        // Low nibble
+        uint8_t low = byte & 0x0F;
+        outStr[outIndex++] = (low < 10) ? ('0' + low) : ('A' + low - 10);
+
+        // Space
+        outStr[outIndex++] = ' ';
+    }
+
+    // Remove last space
+    if (outIndex > 0)
+        outIndex--;
+
+    outStr[outIndex] = '\0';
+}
+//________________________________________________________________________________________________________________

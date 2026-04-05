@@ -19,9 +19,11 @@ public:
     bool SendPacket(uint8_t* buffer);
     bool TestSend();
     bool received();
+    bool received_CountBased();
     void reset();
     uint16_t ConvertAsciiToHex(uint8_t* outBuf);
     uint8_t HexCharToNibble(uint8_t c);
+    uint16_t GetRawBuffer(uint8_t* outBuf, uint16_t maxLen);
 
 private:
     UART_HandleTypeDef* _huart;
