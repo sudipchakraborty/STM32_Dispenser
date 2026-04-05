@@ -77,11 +77,11 @@ void process_Real_Hardware()
 //		 	debug.print("Data Received\r\n");
 		 	uint16_t len = can.GetRawBuffer(binaryBuffer, sizeof(binaryBuffer));
 
-		 	 for(int i=0;i<len;i++)
-				{
-		 		 	 debug.print("%02X ", binaryBuffer[i]);
-				}
-		 	debug.print("\r\n");
+//		 	 for(int i=0;i<len;i++)
+//				{
+//		 		 	 debug.print("%02X ", binaryBuffer[i]);
+//				}
+//		 	debug.print("\r\n");
 
 		    BufferToAsciiString(binaryBuffer, len,asciiBuffer,sizeof(asciiBuffer));
 		 	debug.print(asciiBuffer);
