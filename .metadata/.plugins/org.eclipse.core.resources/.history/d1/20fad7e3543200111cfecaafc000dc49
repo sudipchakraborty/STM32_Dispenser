@@ -1,0 +1,159 @@
+#include "Helper.hpp"
+//__________________________________________________________________________________________________________________
+uint16_t ReadUInt16_BE(const uint8_t* buffer)
+{
+    if (!buffer) return 0;
+
+    return ((uint16_t)buffer[0] << 8) | buffer[1];
+}
+//________________________________________________________________________________________________________________
+uint16_t ReadUInt16_LE(const uint8_t* buffer)
+{
+    if (!buffer) return 0;
+
+    return ((uint16_t)buffer[1] << 8) | buffer[0];
+}
+//________________________________________________________________________________________________________________
+// Big Endian (High byte first)
+void WriteUInt16_BE(uint8_t* buffer, uint16_t value)
+{
+    if (!buffer) return;
+
+    buffer[0] = (value >> 8) & 0xFF;  // High byte
+    buffer[1] = value & 0xFF;         // Low byte
+}
+//________________________________________________________________________________________________________________
+// Little Endian (Low byte first)
+void WriteUInt16_LE(uint8_t* buffer, uint16_t value)
+{
+    if (!buffer) return;
+
+    buffer[0] = value & 0xFF;         // Low byte
+    buffer[1] = (value >> 8) & 0xFF;  // High byte
+}
+//________________________________________________________________________________________________________________
+void BufferToAsciiString(const uint8_t* data,
+                         uint16_t length,
+                         char* outStr,
+                         uint16_t maxLen)
+{
+    uint16_t outIndex = 0;
+
+    for (uint16_t i = 0; i < length; i++)
+    {
+        if (outIndex + 3 >= maxLen) break; // "FF "
+
+        uint8_t byte = data[i];
+
+        // High nibble
+        uint8_t high = (byte >> 4) & 0x0F;
+        outStr[outIndex++] = (high < 10) ? ('0' + high) : ('A' + high - 10);
+
+        // Low nibble
+        uint8_t low = byte & 0x0F;
+        outStr[outIndex++] = (low < 10) ? ('0' + low) : ('A' + low - 10);
+
+        // Space
+        outStr[outIndex++] = ' ';
+    }
+
+    // Remove last space
+    if (outIndex > 0)
+        outIndex--;
+
+    outStr[outIndex] = '\0';
+}
+//________________________________________________________________________________________________________________
+const char* GetRWString(uint8_t rw)
+{
+    switch (rw)
+    {
+        case 0: return "READ";
+        case 1: return "WRITE";
+        case 2: return "EXECUTE";
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetCastString(uint8_t cast)
+{
+    switch (cast)
+    {
+        case 0: return "UNICAST";
+        case 1: return "MULTICAST";
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetPIC_Type_String(uint16_t pic_type)
+{
+    switch (pic_type)
+    {
+        case 101: return "DISP_3X3_GRAINS";
+        case 102: return "DISP_3X3_LIQUID";
+        case 103: return "DISP_3X3_PUREE";
+        case 104: return "DISP_6X6_GRAINS";
+        case 105: return "DISP_6X6_LIQUID";
+        case 106: return "DISP_6X6_PUREE";
+        case  26: return "IP";
+        case  27: return "CHIMNEY";
+        case  28: return "DISHWASHER";
+        case  29: return "WTS";
+
+        case  30: return "MOTOR_DRIVER_1";
+        case 300: return "MOTOR_X";
+        case 301: return "MOTOR_Y";
+        case 302: return "MOTOR_R1";
+        case 303: return "MOTOR_R2";
+        case 304: return "MOTOR_R3";
+        case 305: return "MOTOR_R4";
+        case 306: return "MOTOR_R5";
+
+        case 307: return "MOTOR_L1";
+        case 308: return "MOTOR_L2";
+        case 309: return "MOTOR_L3";
+        case 310: return "MOTOR_L4";
+
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetCommand_String(uint16_t cmd)
+{
+    switch (cmd)
+    {
+        case 0: return "Who_Are_You";
+        case 1: return "Dispense_Timer_Based";
+        case 2: return "Dispense_Weight_Based";
+        case 3: return "LED_TOGGLING_1";
+        case 4: return "LED_TOGGLING_2";
+
+        default: return "INVALID Command";
+    }
+}
+//________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

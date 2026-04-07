@@ -1,5 +1,6 @@
 #include "can.hpp"
 #include "Debug/Debug.h"
+#include "Helper/Helper.hpp"
 
 extern UART_HandleTypeDef huart2;
 extern Debug debug(&huart2);
@@ -46,43 +47,11 @@ bool CANProtocol::ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt)
     unsigned short calcCRC=crc16_xmodem(buffer,9+dataLen);
 
     if (calcCRC != receivedCRC) return  CRC_error;
-
     pkt->valid = true;
-
     return false;
 }
 //_________________________________________________________________________________________________________________________
-void CANProtocol::printPacket(const Packet_t* pkt)
-{
-    if (pkt == nullptr) {
-        debug.print("Packet: NULL\r\n");
-        return;
-    }
 
-//    debug.print("\r\n========== PACKET DUMP ==========\r\n");
-
-    debug.print("Valid      : %s\r\n", pkt->valid ? "TRUE" : "FALSE");
-    debug.print("Length     : %u\r\n", pkt->length);
-    debug.print("Trans Type : 0x%02X\r\n", pkt->transtype);
-    debug.print("Cast       : 0x%02X\r\n", pkt->cast);
-
-    debug.print("Address    : 0x%04X\r\n", pkt->address);
-    debug.print("RW         : %s\r\n", pkt->rw ? "WRITE" : "READ");
-    debug.print("Command    : 0x%02X\r\n", pkt->command);
-
-    debug.print("Data Length: %u\r\n", pkt->dataLen);
-
-    // Print data bytes
-    debug.print("Data       : ");
-    for (uint8_t i = 0; i < pkt->dataLen; i++) {
-    	debug.print("%02X ", pkt->data[i]);
-    }
-    debug.print("\r\n");
-
-    debug.print("CRC        : 0x%04X\r\n", pkt->crc);
-
-//    debug.print("=================================\r\n\r\n");
-}
 //_______________________________________________________________________________________________________________
 int CANProtocol::Get_Sample_Dispense_Packet(uint8_t* buffer)
 {
@@ -101,6 +70,32 @@ int CANProtocol::Get_Sample_Dispense_Packet(uint8_t* buffer)
 		0xE2, 0x7E,		// CRC
 		0x77, 0x88,		// postambles
     };
+
+    // Copy to output buffer
+    for (uint8_t i = 0; i < sizeof(sample); i++)
+    {
+        buffer[i] = sample[i];
+    }
+    return sizeof(sample);
+}
+//___________________________________________________________________________________________
+int CANProtocol::Get_Sample2_Dispense_Packet(uint8_t* buffer)
+{
+    if (!buffer) return 0;
+
+  uint8_t sample[] =
+  {
+      0x66, 0x55,     // preambles
+      0x0F,           // length
+      0x00,           // Transtype
+      0x00,           // Multicast
+      0x00, 0x65,     // PIC address (updated from 0x006D → 0x0065)
+      0x02,           // Execute
+      0x02,           // command (updated from 0x00 → 0x02)
+      0x00, 0x64,     // Dispense amount = 100 gms
+      0x36, 0x52,     // CRC (updated)
+      0x77, 0x88      // postambles
+  };
 
     // Copy to output buffer
     for (uint8_t i = 0; i < sizeof(sample); i++)

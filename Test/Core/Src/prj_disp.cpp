@@ -10,6 +10,8 @@
 #include "CAN/can.hpp"
 #include "Helper/Helper.hpp"
 #include "Delay/delay.hpp"
+
+#include "Project_Helper.hpp"
 ///////////////////////////////////////////////////
 // user name: sudipchakraborty
 //Repo Token: "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"
@@ -44,6 +46,8 @@ static LED led2(GPIOB, GPIO_PIN_6);
 // HX711 instance
 HX711 hx(GPIOB, GPIO_PIN_11,   // DOUT
          GPIOB, GPIO_PIN_10);  // SCK
+
+long Packet_count;
 //////////////////////////////////////////////
 extern "C" void prj_Disp_init(void)
 {
@@ -54,7 +58,8 @@ extern "C" void prj_Disp_init(void)
     hx.Init();
     debug.print("HX711 Initialized\r\n");
     servo1.close();
-    ////////////////
+    Packet_count=0;
+
     while(1)
 	{
 		process_Real_Hardware();
@@ -66,50 +71,39 @@ void process_Real_Hardware()
 	long value;
 	uint8_t binaryBuffer[64];
 	char asciiBuffer[200];
+	Packet_t pkt;
 
 	if(can.received_CountBased())
 		{
-		    debug.print("=================================\r\n");
-
-
-
-
-//		 	debug.print("Data Received\r\n");
+			Packet_count++;
+			debug.print("\r\n=========== Packet: %03u ===========\r\n", Packet_count);
 		 	uint16_t len = can.GetRawBuffer(binaryBuffer, sizeof(binaryBuffer));
-
-//		 	 for(int i=0;i<len;i++)
-//				{
-//		 		 	 debug.print("%02X ", binaryBuffer[i]);
-//				}
-//		 	debug.print("\r\n");
-
 		    BufferToAsciiString(binaryBuffer, len,asciiBuffer,sizeof(asciiBuffer));
 		 	debug.print(asciiBuffer);
+			printPacket(&pkt,debug);
+			debug.print("\r\n==================================\r\n\r\n");
 
-//			Packet_t pkt;
-//			if(canP.ParseError(binaryBuffer, len, &pkt))
-//			{
-//				debug.print("Packet Receive Error \r\n");
-//			}
-//			else
-//			{
-//				if(pkt.address==MyAddress)
-//				{
-//					process_command(pkt);
-//				}
-//			}
-//			canP.printPacket(&pkt);
-			debug.print("\r\n=================================\r\n\r\n");
+
+			if(canP.ParseError(binaryBuffer, len, &pkt))
+			{
+				debug.print("Packet Receive Error \r\n");
+			}
+			else
+			{
+				if(pkt.address==MyAddress)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+			}
+
 			can.reset();
 		}
 	else
 	{
 		led1.Toggle();
-	//	debug.test();
-	//	Delay::ms(100);   // 1 second delay
-
 	}
-
 }
 //______________________________________________________________________________________________________________________
 void process_command(Packet_t pkt)
@@ -141,6 +135,7 @@ char DispenseWeight(long target_grams, int OpenInDeg)
 {
     long startWeight = 0;
     long currentWeight = 0;
+    long TimeOutCount=0;
 
     // Read initial weight
     debug.print("Dispense Weight: %ld\r\n",target_grams);
@@ -157,6 +152,12 @@ char DispenseWeight(long target_grams, int OpenInDeg)
 
 	while (1)
 	{
+		TimeOutCount++;
+		if(TimeOutCount>10)
+		{
+			debug.print("Error: Unable to Fetch Weight..\r\n");
+			return -1;
+		}
 		hx.GetWeight(currentWeight);
 		debug.print("current Weight: %ld\r\n",currentWeight);
 
@@ -165,8 +166,9 @@ char DispenseWeight(long target_grams, int OpenInDeg)
 		{
 			servo1.close();
 			debug.print(" Valve Closed");
-			break;
+			return 0;
 		}
 	}
+	return -1;
  }
 //______________________________________________________________________________________________________________________

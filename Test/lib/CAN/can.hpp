@@ -58,6 +58,7 @@ class CANProtocol
 public:
     bool ParseError(uint8_t* buffer, uint16_t len, Packet_t* pkt);
     int Get_Sample_Dispense_Packet(uint8_t* buffer);
+    int Get_Sample2_Dispense_Packet(uint8_t* buffer);
     unsigned short crc16_xmodem(const unsigned char *data, int len);
     uint16_t BuildPacket(const Packet_t* pkt, uint8_t* buffer);
     uint16_t Get_Demo_Packet(uint8_t* buffer);

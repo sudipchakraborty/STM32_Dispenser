@@ -1,0 +1,14 @@
+#ifndef PRJ_UTILS_HPP
+#define PRJ_UTILS_HPP
+#include <stdint.h>
+#include "CAN\can.hpp"
+#include "Debug/Debug.h"
+#include "Enum.hpp"
+
+	void printPacket(const Packet_t* pkt, Debug debug);
+	const char* GetRWString(uint8_t rw);
+	const char* GetCastString(uint8_t cast);
+	const char* GetPIC_Type_String(PIC_Type_t pic_type);
+	const char* GetCommand_String(uint16_t cmd);
+#endif
+

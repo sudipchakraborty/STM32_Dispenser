@@ -1,0 +1,75 @@
+#include "Prj_utils.hpp"
+#include "Enum.hpp"
+
+const char* GetRWString(uint8_t rw)
+{
+    switch (rw)
+    {
+        case 0: return "READ";
+        case 1: return "WRITE";
+        case 2: return "EXECUTE";
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetCastString(uint8_t cast)
+{
+    switch (cast)
+    {
+        case 0: return "UNICAST";
+        case 1: return "MULTICAST";
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetPIC_Type_String(PIC_Type_t pic_type)
+{
+    switch (pic_type)
+    {
+        case DISP_3X3_GRAINS: return "DISP_3X3_GRAINS";
+        case DISP_3X3_LIQUID: return "DISP_3X3_LIQUID";
+        case DISP_3X3_PUREE:  return "DISP_3X3_PUREE";
+        case DISP_6X6_GRAINS: return "DISP_6X6_GRAINS";
+        case DISP_6X6_LIQUID: return "DISP_6X6_LIQUID";
+        case DISP_6X6_PUREE:  return "DISP_6X6_PUREE";
+
+        case IP:          return "IP";
+        case CHIMNEY:     return "CHIMNEY";
+        case DISHWASHER:  return "DISHWASHER";
+        case WTS:         return "WTS";
+
+        case MOTOR_DRIVER_1: return "MOTOR_DRIVER_1";
+
+        case MOTOR_X: return "MOTOR_X";
+        case MOTOR_Y: return "MOTOR_Y";
+
+        case MOTOR_R1: return "MOTOR_R1";
+        case MOTOR_R2: return "MOTOR_R2";
+        case MOTOR_R3: return "MOTOR_R3";
+        case MOTOR_R4: return "MOTOR_R4";
+        case MOTOR_R5: return "MOTOR_R5";
+
+        case MOTOR_L1: return "MOTOR_L1";
+        case MOTOR_L2: return "MOTOR_L2";
+        case MOTOR_L3: return "MOTOR_L3";
+        case MOTOR_L4: return "MOTOR_L4";
+
+        default: return "INVALID";
+    }
+}
+//________________________________________________________________________________________________________________
+const char* GetCommand_String(uint16_t cmd)
+{
+    switch (cmd)
+    {
+        case 0: return "Who_Are_You";
+        case 1: return "Dispense_Timer_Based";
+        case 2: return "Dispense_Weight_Based";
+        case 3: return "LED_TOGGLING_1";
+        case 4: return "LED_TOGGLING_2";
+
+        default: return "INVALID Command";
+    }
+}
+//________________________________________________________________________________________________________________
+
