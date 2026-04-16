@@ -1,0 +1,188 @@
+#include "HX711.h"
+#include <stdlib.h>
+HX711::HX711(GPIO_TypeDef* dout_port, uint16_t dout_pin,
+             GPIO_TypeDef* sck_port, uint16_t sck_pin)
+    : _dout_port(dout_port), _dout_pin(dout_pin),
+      _sck_port(sck_port), _sck_pin(sck_pin),
+      _index(0), _runningSum(0) {
+
+    for(int i = 0; i < BUFFER_SIZE; i++) {
+        _buffer[i] = OFFSET;
+        _runningSum += OFFSET;
+    }
+}
+//____________________________________________________________________________________________________________________________
+void HX711::Init() {
+    // GPIO Init is handled in MX_GPIO_Init, but we ensure SCK starts low
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+}
+//____________________________________________________________________________________________________________________________
+
+//____________________________________________________________________________________________________________________________
+bool HX711::GetWeight(long &value)
+{
+    long raw;
+
+    if (ReadRaw(raw))
+    {
+        // === Updated calibration (based on your new data) ===
+        const long OFFSET = 1660567;   // 0g value
+        const long SCALE  = 1198;      // ADC per gram
+
+        // Apply calibration with rounding
+        long weight = (raw - OFFSET + (SCALE / 2)) / SCALE;
+
+        // Dead zone ±2g
+        if (weight < 2 && weight > -2)
+            weight = 0;
+
+        value = weight;
+        return true;
+    }
+
+    return false;
+}
+//____________________________________________________________________________________________________________________________
+long HX711::Get_Raw_Avj_Value()
+{
+	 long value;
+    // Shift buffer left
+    for(int i = 0; i < BUFFER_SIZE - 1; i++)
+    {
+        _buffer[i] = _buffer[i + 1];
+    }
+
+    // Insert new value at end
+	if(ReadRaw(value))
+	{
+		_buffer[BUFFER_SIZE - 1] =value;
+	}
+
+    // Calculate average
+    long sum = 0;
+    for(int i = 0; i < BUFFER_SIZE; i++)
+    {
+        sum += _buffer[i];
+    }
+
+    long average = sum / BUFFER_SIZE;
+    return average;
+}
+//____________________________________________________________________________________________________________________________
+bool HX711::ReadRaw(long &value)
+{
+    uint32_t timeout = HAL_GetTick();
+
+    // Wait for DOUT LOW (data ready)
+    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+    {
+        if ((HAL_GetTick() - timeout) > 200)
+            return false;
+    }
+
+    __disable_irq();   // prevent timing disturbance
+
+    uint32_t data = 0;
+
+    for (int i = 0; i < 24; i++)
+    {
+        // SCK HIGH
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+
+        // 🔥 stable delay (~1us depending on MCU speed)
+        for (volatile int d = 0; d < 60; d++);
+
+        data = data << 1;
+
+        // Read bit
+        if (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+            data++;
+
+        // SCK LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+
+        for (volatile int d = 0; d < 60; d++);
+    }
+
+    // 25th pulse → Gain = 128
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+    for (volatile int d = 0; d < 60; d++);
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+
+    __enable_irq();
+
+    // 🔥 Sign extend 24-bit to 32-bit
+    if (data & 0x800000)
+        data |= 0xFF000000;
+
+    value = (int32_t)data;
+
+    return true;
+}
+//____________________________________________________________________________________________________________________________
+long HX711::Get_Raw()
+{
+    uint32_t timeout = HAL_GetTick();
+
+    // Wait for DOUT LOW
+    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+    {
+        if ((HAL_GetTick() - timeout) > 100)
+            return 0;
+    }
+
+    __disable_irq();
+
+    uint32_t data = 0;
+
+    for (int i = 0; i < 24; i++)
+    {
+        // SCK HIGH
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+        for (volatile int d = 0; d < 60; d++);
+
+        // 🔥 FIXED TIMING (no loops, deterministic)
+//        __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+
+        data <<= 1;
+
+        if (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+            data++;
+
+        // SCK LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        for (volatile int d = 0; d < 60; d++);
+
+//        __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+    }
+
+    // EXACTLY 1 extra pulse
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+//    __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+//    for (volatile int d = 0; d < 60; d++);
+    HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+//    for (volatile int d = 0; d < 60; d++);
+
+    __enable_irq();
+
+    // Sign extend
+    if (data & 0x800000)
+        data |= 0xFF000000;
+
+    return (int32_t)data;
+}
+//____________________________________________________________________________________________________________________________
+void HX711::TestSCK(uint16_t delayMs)
+{
+    while (1)
+    {
+        // HIGH
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+        HAL_Delay(delayMs);
+
+        // LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        HAL_Delay(delayMs);
+    }
+}
+//____________________________________________________________________________________________________________________________

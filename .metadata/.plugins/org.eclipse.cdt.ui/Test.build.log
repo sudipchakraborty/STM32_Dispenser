@@ -1,21 +1,44 @@
-14:45:27 **** Incremental Build of configuration Debug for project Test ****
+12:50:03 **** Incremental Build of configuration Debug for project Test ****
 make -j8 all 
 arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"C:/Users/Dr. S Chakraborty/OneDrive/Desktop/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
 ../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
-../Core/Src/prj_disp.cpp:71:14: warning: unused variable 'value' [-Wunused-variable]
-   71 |         long value;
+../Core/Src/prj_disp.cpp:102:14: warning: unused variable 'value' [-Wunused-variable]
+  102 |         long value;
       |              ^~~~~
-arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"C:\Users\Dr. S Chakraborty\OneDrive\Desktop\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
-Finished building target: Test.elf
- 
-arm-none-eabi-size  Test.elf 
-arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
-   text	   data	    bss	    dec	    hex	filename
-  26236	     92	   2508	  28836	   70a4	Test.elf
-Finished building: default.size.stdout
- 
-Finished building: Test.list
- 
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:207:17: error: break statement not within loop or switch
+  207 |                 break;
+      |                 ^~~~~
+../Core/Src/prj_disp.cpp:209:9: error: case label 'execute' not within a switch statement
+  209 |         case Operation::execute:
+      |         ^~~~
+../Core/Src/prj_disp.cpp:212:17: error: break statement not within loop or switch
+  212 |                 break;
+      |                 ^~~~~
+../Core/Src/prj_disp.cpp:214:9: error: case label not within a switch statement
+  214 |         default:
+      |         ^~~~~~~
+../Core/Src/prj_disp.cpp:215:17: error: break statement not within loop or switch
+  215 |                 break;
+      |                 ^~~~~
+../Core/Src/prj_disp.cpp:143:18: warning: unused variable 'temp' [-Wunused-variable]
+  143 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:143:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  143 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:143:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  143 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:145:18: warning: unused variable 'diff' [-Wunused-variable]
+  145 |         uint16_t diff;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp: At global scope:
+../Core/Src/prj_disp.cpp:218:1: error: expected declaration before '}' token
+  218 | }
+      | ^
+make: *** [Core/Src/subdir.mk:44: Core/Src/prj_disp.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
 
-14:45:29 Build Finished. 0 errors, 1 warnings. (took 1s.813ms)
+12:50:05 Build Failed. 7 errors, 5 warnings. (took 2s.340ms)
 

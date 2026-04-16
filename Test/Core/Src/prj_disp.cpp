@@ -48,6 +48,9 @@ HX711 hx(GPIOB, GPIO_PIN_11,   // DOUT
          GPIOB, GPIO_PIN_10);  // SCK
 
 long Packet_count;
+long value=0;
+
+long HX711_ReadRaw(void);
 //////////////////////////////////////////////
 extern "C" void prj_Disp_init(void)
 {
@@ -58,14 +61,42 @@ extern "C" void prj_Disp_init(void)
     hx.Init();
     debug.print("HX711 Initialized\r\n");
     servo1.close();
-    Packet_count=0;
-
     while(1)
 	{
 		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________
+long HX711_ReadRaw(void)
+{
+    long count = 0;
+    uint8_t i;
+
+    // Wait for data ready (DT goes LOW)
+    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET);
+
+    for (i = 0; i < 24; i++)
+    {
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+        count = count << 1;
+
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11))
+            count++;
+    }
+
+    // 25th pulse (gain = 128)
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+
+    // Convert to signed 24-bit
+    if (count & 0x800000)
+        count |= 0xFF000000;
+
+    return count;
+}
+//__________________________________________________________________________________________
 void process_Real_Hardware()
 {
 	long value;
@@ -94,7 +125,7 @@ void process_Real_Hardware()
 				{
 					debug.print("This is my Packet \r\n");
 					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+//					process_command(pkt);
 				}
 			}
 
@@ -109,6 +140,9 @@ void process_Real_Hardware()
 void process_command(Packet_t pkt)
 {
 	uint16_t val;
+	uint16_t temp, Previous_Weight, Current_Weight;
+
+	uint16_t diff;
 
 	switch(pkt.rw)
 	{
@@ -117,6 +151,58 @@ void process_command(Packet_t pkt)
 		break;
 	////////////////////////
 	case Operation::write:
+
+//		if(pkt.command==2)	// Weight Based Dispense
+//		{
+//			value =HX711_ReadRaw();
+//			Previous_Weight=hx.GetCalibratedWeight(value);
+//			debug.print("Previous Weight: %d\r\n", Previous_Weight);
+//			Delay::ms(500);
+//
+//			servo1.moveFast(90);
+//			do
+//			{
+//				value =HX711_ReadRaw();
+//				Current_Weight=hx.GetCalibratedWeight(value);
+//				debug.print("current Weight: %d\r\n", Current_Weight);
+//				Delay::ms(200);
+//
+//				diff=Previous_Weight-150;
+//				debug.print("diff Weight: %d\r\n", diff);
+//
+//
+//			}while(Current_Weight>diff);
+
+//			servo1.fastClose();
+
+
+			return;
+
+
+
+//			temp =HX711_ReadRaw();
+			//    		value=hx.GetCalibratedWeight(value);
+			//    		debug.print("ADC Value: %d\r\n", value);
+			//    		Delay::ms(500);
+
+
+//			debug.print("Triggered Dispense Based weight \r\n");
+//			servo1.moveFast(90);
+//			Delay::ms(3000);
+//			servo1.fastClose();
+		}
+
+		if(pkt.command==5)
+		{
+			servo1.moveFast(90);
+			Delay::ms(3000);
+			servo1.fastClose();
+		}
+
+		if(pkt.command==6)
+		{
+			servo1.fastClose();
+		}
 
 		break;
 	///////////////////////

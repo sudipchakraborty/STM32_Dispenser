@@ -71,77 +71,105 @@ long HX711::Get_Raw_Avj_Value()
 //____________________________________________________________________________________________________________________________
 bool HX711::ReadRaw(long &value)
 {
-    long count = 0;
     uint32_t timeout = HAL_GetTick();
 
     // Wait for DOUT LOW (data ready)
-    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin)) {
+    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+    {
         if ((HAL_GetTick() - timeout) > 200)
             return false;
     }
 
-    __disable_irq();   // 🔥 IMPORTANT for stability
+    __disable_irq();   // prevent timing disturbance
+
+    uint32_t data = 0;
 
     for (int i = 0; i < 24; i++)
     {
         // SCK HIGH
         HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
 
-        count <<= 1;
+        // 🔥 stable delay (~1us depending on MCU speed)
+        for (volatile int d = 0; d < 60; d++);
 
-        // READ while HIGH (correct timing)
+        data = data << 1;
+
+        // Read bit
         if (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
-            count++;
+            data++;
 
         // SCK LOW
         HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
-//        for(volatile int d=0; d<10; d++);
+
+        for (volatile int d = 0; d < 60; d++);
     }
 
-    // 25th pulse (gain = 128)
+    // 25th pulse → Gain = 128
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
-    for(volatile int d=0; d<50; d++); // This delay is very crusial , if ommit reult -1 or 0 appear
+    for (volatile int d = 0; d < 60; d++);
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
 
     __enable_irq();
 
-    // Sign extend
-    if (count & 0x800000)
-        count |= ~0xFFFFFF;
+    // 🔥 Sign extend 24-bit to 32-bit
+    if (data & 0x800000)
+        data |= 0xFF000000;
 
-    value = count;
-
-    if((count ==-1)||(count==0)) return false;
+    value = (int32_t)data;
 
     return true;
 }
 //____________________________________________________________________________________________________________________________
-long HX711::Get_Raw() {
-
-    long count = 0;
+long HX711::Get_Raw()
+{
     uint32_t timeout = HAL_GetTick();
 
-    // Wait for DOUT to go low (Data Ready)
-    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin)) {
-        if ((HAL_GetTick() - timeout) > 100) return false;
+    // Wait for DOUT LOW
+    while (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+    {
+        if ((HAL_GetTick() - timeout) > 100)
+            return 0;
     }
 
-    // Pulse SCK 24 times to read 24-bit data
-    for (int i = 0; i < 24; i++) {
+    __disable_irq();
+
+    uint32_t data = 0;
+
+    for (int i = 0; i < 24; i++)
+    {
+        // SCK HIGH
         HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
-        count <<= 1;
-        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        for (volatile int d = 0; d < 20; d++);
 
-        if (HAL_GPIO_ReadPin(_dout_port, _dout_pin)) count++;
+        // 🔥 FIXED TIMING (no loops, deterministic)
+//        __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+
+        data <<= 1;
+
+        if (HAL_GPIO_ReadPin(_dout_port, _dout_pin))
+            data++;
+        for (volatile int d = 0; d < 20; d++);
+        // SCK LOW
+        HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+        for (volatile int d = 0; d < 20; d++);
+
+//        __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
     }
 
-    // 25th pulse sets gain to 128 for next read
+    // EXACTLY 1 extra pulse
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_SET);
+//    __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+    for (volatile int d = 0; d < 60; d++);
     HAL_GPIO_WritePin(_sck_port, _sck_pin, GPIO_PIN_RESET);
+    for (volatile int d = 0; d < 60; d++);
 
-    // Sign extend for 24-bit negative numbers
-    if (count & 0x800000) count |= ~0xFFFFFF;
-    return count;
+    __enable_irq();
+
+    // Sign extend
+    if (data & 0x800000)
+        data |= 0xFF000000;
+
+    return (int32_t)data;
 }
 //____________________________________________________________________________________________________________________________
 void HX711::TestSCK(uint16_t delayMs)
@@ -158,3 +186,10 @@ void HX711::TestSCK(uint16_t delayMs)
     }
 }
 //____________________________________________________________________________________________________________________________
+float HX711::GetCalibratedWeight(long adc)
+{
+    const float m = 0.000509f;   // slope (g per ADC count)
+    const float c = -475.0f;     // offset (grams)
+
+    return (m * adc) + c;
+}

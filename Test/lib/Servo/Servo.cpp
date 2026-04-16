@@ -107,7 +107,20 @@ void Servo::moveTo(float targetAngle, uint8_t step, uint16_t delayMs)
     currentAngle = targetAngle;
 }
 //____________________________________________________________________________________________________________________
+void Servo::moveFast(float angle)
+{
+    if(angle < 0) angle = 0;
+    if(angle > 180) angle = 180;
 
+    setAngle(angle);      // direct PWM update (instant)
+    currentAngle = angle; // update state
+}
+
+void Servo::fastClose()
+{
+    setAngle(0);        // go directly to closed position
+    currentAngle = 0;   // update state
+}
 
 
 

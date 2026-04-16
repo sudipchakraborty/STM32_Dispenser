@@ -27,8 +27,10 @@ public:
     void setSpeed(int speed);
 
     void moveTo(float targetAngle, uint8_t step = 1, uint16_t delayMs = 20);
+    void moveFast(float angle);
     void open(float angle);
     void close();
+    void fastClose();
 
     void TestSweep(void);
 };

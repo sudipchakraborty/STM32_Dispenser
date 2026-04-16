@@ -110,6 +110,8 @@ const char* GetCommand_String(uint16_t cmd)
         case 2: return "Dispense_Weight_Based";
         case 3: return "LED_TOGGLING_1";
         case 4: return "LED_TOGGLING_2";
+        case 5: return "Open_Valve,";
+        case 6: return "Close_Valve;";
 
         default: return "INVALID Command";
     }
