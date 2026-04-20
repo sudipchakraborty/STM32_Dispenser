@@ -14,12 +14,16 @@ public:
           GPIO_TypeDef* sck_port, uint16_t sck_pin);
 
     void Init();
-    bool ReadRaw(long &value);
-    long Get_Raw();
-    long Get_Raw_Avj_Value(); // Returns weight * 100 (e.g., 1250 for 12.50g)
-    void TestSCK(uint16_t delayMs);
-    bool GetWeight(long &value);
+    float GetWeight();
     float GetCalibratedWeight(long adc);
+    long ReadRaw(void);
+
+////    bool ReadRaw(long &value);
+////    long Get_Raw();
+////    long Get_Raw_Avj_Value(); // Returns weight * 100 (e.g., 1250 for 12.50g)
+////    void TestSCK(uint16_t delayMs);
+////    bool GetWeight(long &value);
+//    float GetCalibratedWeight(long adc);
 
 private:
     GPIO_TypeDef* _dout_port;

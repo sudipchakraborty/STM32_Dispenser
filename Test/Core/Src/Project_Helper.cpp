@@ -5,6 +5,9 @@
 #include "CAN\can.hpp"
 #include "Debug\Debug.h"
 #include "Helper\Helper.hpp"
+#include <stdint.h>
+#include <stddef.h>
+
 
 
 void printPacket(const Packet_t* pkt, Debug debug)
@@ -110,11 +113,28 @@ const char* GetCommand_String(uint16_t cmd)
         case 2: return "Dispense_Weight_Based";
         case 3: return "LED_TOGGLING_1";
         case 4: return "LED_TOGGLING_2";
-        case 5: return "Open_Valve,";
-        case 6: return "Close_Valve;";
+        case 5: return "Open_Valve";
+        case 6: return "Close_Valve";
 
         default: return "INVALID Command";
     }
 }
 //________________________________________________________________________________________________________________
+size_t Packet_GetUint16Array(Packet_t *pkt, uint16_t *outArray, size_t maxOutLen)
+{
+    if (!pkt || !outArray) return 0;
 
+    size_t count = 0;
+
+    // Each uint16 = 2 bytes
+    for (size_t i = 0; i + 1 < pkt->dataLen; i += 2)
+    {
+        if (count >= maxOutLen) break;
+
+        // Big-endian conversion
+        outArray[count] = ((uint16_t)pkt->data[i] << 8) | pkt->data[i + 1];
+        count++;
+    }
+
+    return count; // number of uint16 elements filled
+}

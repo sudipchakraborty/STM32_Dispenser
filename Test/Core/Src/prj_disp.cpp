@@ -63,39 +63,12 @@ extern "C" void prj_Disp_init(void)
     servo1.close();
     while(1)
 	{
+
 		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________
-long HX711_ReadRaw(void)
-{
-    long count = 0;
-    uint8_t i;
 
-    // Wait for data ready (DT goes LOW)
-    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET);
-
-    for (i = 0; i < 24; i++)
-    {
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-        count = count << 1;
-
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
-
-        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11))
-            count++;
-    }
-
-    // 25th pulse (gain = 128)
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
-
-    // Convert to signed 24-bit
-    if (count & 0x800000)
-        count |= 0xFF000000;
-
-    return count;
-}
 //__________________________________________________________________________________________
 void process_Real_Hardware()
 {
@@ -125,7 +98,7 @@ void process_Real_Hardware()
 				{
 					debug.print("This is my Packet \r\n");
 					Delay::ms(1000);   // 1000 ms = 1 second delay
-//					process_command(pkt);
+					process_command(pkt);
 				}
 			}
 
@@ -176,7 +149,7 @@ void process_command(Packet_t pkt)
 //			servo1.fastClose();
 
 
-			return;
+//			return;
 
 
 
@@ -190,7 +163,7 @@ void process_command(Packet_t pkt)
 //			servo1.moveFast(90);
 //			Delay::ms(3000);
 //			servo1.fastClose();
-		}
+//		}
 
 		if(pkt.command==5)
 		{
@@ -207,8 +180,29 @@ void process_command(Packet_t pkt)
 		break;
 	///////////////////////
 	case Operation::execute:
-		val=ReadUInt16_BE(pkt.data);
-		DispenseWeight(val, 60);
+
+		if(pkt.command==5) // 5: return "Open_Valve,";
+		{
+			uint16_t values[64];
+			size_t count = Packet_GetUint16Array(&pkt, values, 64);
+			debug.print("Open command received:5 \r\n");
+			debug.print("Rotation angle:%d \r\n",values[0]);
+			servo1.moveFast(values[0]);
+		}
+
+		if(pkt.command==6) // 5: return "Open_Valve,";
+		{
+			debug.print("Close command received:6 \r\n");
+			servo1.fastClose();
+		}
+
+		if(pkt.command==2) // "Dispense_Weight_Based";
+		{
+			debug.print("Dispense_Weight_Based command received:2 \r\n");
+			val=ReadUInt16_BE(pkt.data);
+			DispenseWeight(val, 90);
+		}
+
 		break;
 	///////////////////////
 	default:
@@ -219,41 +213,62 @@ void process_command(Packet_t pkt)
 //______________________________________________________________________________________________________________________
 char DispenseWeight(long target_grams, int OpenInDeg)
 {
-    long startWeight = 0;
-    long currentWeight = 0;
-    long TimeOutCount=0;
-
+    float startWeight = 0;
+    float currentWeight = 0;
+    float TimeOutCount=0;
+    float WeightBackUp[5];
+    int index=0;
     // Read initial weight
     debug.print("Dispense Weight: %ld\r\n",target_grams);
 
-    hx.GetWeight(startWeight);
-	debug.print("Initial Weight: %ld\r\n",startWeight);
+    startWeight=hx.GetWeight();
+    debug.print("startWeight: %ld\r\n", (long)startWeight);
+    Delay::ms(500);
 
     long targetFinal = startWeight - target_grams;
     debug.print("Target Weight Value: %ld\r\n",targetFinal);
 
-    // Open valve
+   // Open valve
     servo1.open(OpenInDeg);
     debug.print("Valve Open(Deg.): %ld\r\n",OpenInDeg);
 
 	while (1)
 	{
-		TimeOutCount++;
-		if(TimeOutCount>10)
-		{
-			debug.print("Error: Unable to Fetch Weight..\r\n");
-			return -1;
-		}
-		hx.GetWeight(currentWeight);
-		debug.print("current Weight: %ld\r\n",currentWeight);
+		currentWeight=hx.GetWeight();
+		debug.print("currentWeight: %ld\r\n", (long)currentWeight);
+		Delay::ms(250);
 
-		// Stop slightly early to avoid overshoot
+		float currentWeight2=hx.GetWeight();
+	    if(currentWeight==currentWeight2)
+	    {
+	    	debug.print("Error: Valve Opening Error..\r\n");
+	    	return -1;
+	    }
+
+		////////////////////////////////
 		if (currentWeight <= targetFinal)
 		{
 			servo1.close();
 			debug.print(" Valve Closed");
 			return 0;
 		}
+		////////////////////////////////
+//		if(currentWeight==WeightBackUp)
+//		{
+//			TimeOutCount++;
+//			debug.print("currentWeight==WeightBackUp..TimeOutCount..\r\n");
+//			if(TimeOutCount>2)
+//			{
+//					debug.print("Error: Valve Opening Error..\r\n");
+//					return -1;
+//			}
+//		}
+//		else
+//		{
+//			WeightBackUp=currentWeight;
+//			TimeOutCount=0;
+//		}
+		////////////////////////////////
 	}
 	return -1;
  }

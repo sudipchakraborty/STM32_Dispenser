@@ -25,7 +25,7 @@ typedef struct
     uint8_t rw;
     uint8_t command;
 
-    uint8_t data[64];
+    uint8_t data[128];
     uint8_t dataLen;
 
     uint16_t crc;

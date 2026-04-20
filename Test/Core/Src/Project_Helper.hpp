@@ -10,5 +10,7 @@
 	const char* GetCastString(uint8_t cast);
 	const char* GetPIC_Type_String(PIC_Type_t pic_type);
 	const char* GetCommand_String(uint16_t cmd);
+	size_t Packet_GetUint16Array(Packet_t *pkt, uint16_t *outArray, size_t maxOutLen);
+
 #endif
 
