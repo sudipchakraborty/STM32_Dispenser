@@ -1,47 +1,37 @@
-15:12:40 **** Incremental Build of configuration Debug for project Test ****
+15:12:32 **** Incremental Build of configuration Debug for project Test ****
 make -j8 all 
 arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"C:/Users/Dr. S Chakraborty/OneDrive/Desktop/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
 ../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
-../Core/Src/prj_disp.cpp:75:14: warning: unused variable 'value' [-Wunused-variable]
-   75 |         long value;
+../Core/Src/prj_disp.cpp:99:14: warning: unused variable 'value' [-Wunused-variable]
+   99 |         long value;
       |              ^~~~~
 ../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
-../Core/Src/prj_disp.cpp:187:32: warning: unused variable 'count' [-Wunused-variable]
-  187 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+../Core/Src/prj_disp.cpp:211:32: warning: unused variable 'count' [-Wunused-variable]
+  211 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
       |                                ^~~~~
-../Core/Src/prj_disp.cpp:116:18: warning: unused variable 'temp' [-Wunused-variable]
-  116 |         uint16_t temp, Previous_Weight, Current_Weight;
+../Core/Src/prj_disp.cpp:140:18: warning: unused variable 'temp' [-Wunused-variable]
+  140 |         uint16_t temp, Previous_Weight, Current_Weight;
       |                  ^~~~
-../Core/Src/prj_disp.cpp:116:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
-  116 |         uint16_t temp, Previous_Weight, Current_Weight;
+../Core/Src/prj_disp.cpp:140:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  140 |         uint16_t temp, Previous_Weight, Current_Weight;
       |                        ^~~~~~~~~~~~~~~
-../Core/Src/prj_disp.cpp:116:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
-  116 |         uint16_t temp, Previous_Weight, Current_Weight;
+../Core/Src/prj_disp.cpp:140:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  140 |         uint16_t temp, Previous_Weight, Current_Weight;
       |                                         ^~~~~~~~~~~~~~
-../Core/Src/prj_disp.cpp:118:18: warning: unused variable 'diff' [-Wunused-variable]
-  118 |         uint16_t diff;
+../Core/Src/prj_disp.cpp:142:18: warning: unused variable 'diff' [-Wunused-variable]
+  142 |         uint16_t diff;
       |                  ^~~~
-../Core/Src/prj_disp.cpp: In function 'char DispenseWeight(long int, int)':
-../Core/Src/prj_disp.cpp:218:11: warning: unused variable 'TimeOutCount' [-Wunused-variable]
-  218 |     float TimeOutCount=0;
-      |           ^~~~~~~~~~~~
-../Core/Src/prj_disp.cpp:219:11: warning: unused variable 'WeightBackUp' [-Wunused-variable]
-  219 |     float WeightBackUp[5];
-      |           ^~~~~~~~~~~~
-../Core/Src/prj_disp.cpp:220:9: warning: unused variable 'index' [-Wunused-variable]
-  220 |     int index=0;
-      |         ^~~~~
 arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"C:\Users\Dr. S Chakraborty\OneDrive\Desktop\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 Finished building target: Test.elf
  
 arm-none-eabi-size  Test.elf 
 arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
    text	   data	    bss	    dec	    hex	filename
-  26576	     92	   2508	  29176	   71f8	Test.elf
+  20960	     92	   2508	  23560	   5c08	Test.elf
 Finished building: default.size.stdout
  
 Finished building: Test.list
  
 
-15:12:41 Build Finished. 0 errors, 9 warnings. (took 1s.213ms)
+15:12:35 Build Finished. 0 errors, 6 warnings. (took 2s.716ms)
 
