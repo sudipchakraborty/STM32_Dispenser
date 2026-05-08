@@ -207,22 +207,22 @@ long HX711::ReadRaw(void)
     uint8_t i;
 
     // Wait for data ready (DT goes LOW)
-    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET);
+    while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == GPIO_PIN_SET);
 
     for (i = 0; i < 24; i++)
     {
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
         count = count << 1;
 
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 
-        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11))
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5))
             count++;
     }
 
     // 25th pulse (gain = 128)
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 
     // Convert to signed 24-bit
     if (count & 0x800000)
@@ -230,4 +230,36 @@ long HX711::ReadRaw(void)
 
     return count;
 }
+
+
+
+//long HX711::ReadRaw(void)
+//{
+//    long count = 0;
+//    uint8_t i;
+//
+//    // Wait for data ready (DT goes LOW)
+//    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET);
+//
+//    for (i = 0; i < 24; i++)
+//    {
+//        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+//        count = count << 1;
+//
+//        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+//
+//        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11))
+//            count++;
+//    }
+//
+//    // 25th pulse (gain = 128)
+//    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+//
+//    // Convert to signed 24-bit
+//    if (count & 0x800000)
+//        count |= 0xFF000000;
+//
+//    return count;
+//}
 //____________________________________________________________________________________________________________________________

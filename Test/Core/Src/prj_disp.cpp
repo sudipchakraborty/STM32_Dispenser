@@ -13,6 +13,7 @@
 
 #include "Project_Helper.hpp"
 #include "Servo/MG996R.h"
+#include "Solenoid/Solenoid.hpp"
 
 #include <cmath>
 ///////////////////////////////////////////////////
@@ -58,6 +59,8 @@ long HX711_ReadRaw(void);
 
 #define WEIGHT_THRESHOLD 0.2f
 #define TIMEOUT_LIMIT 20   // ~10 sec (500ms * 20)
+
+Solenoid solenoid(GPIOA, GPIO_PIN_6);
 //////////////////////////////////////////////
 extern "C" void prj_Disp_init(void)
 {
@@ -74,16 +77,47 @@ extern "C" void prj_Disp_init(void)
 //    // Calibrated from real data
 //    float Time = 19.15 * Weight;
 //
-//    servo1.moveFast(120);
-//    Delay::ms(500);
+
+//    Time(ms)=37.5×Grams
+    int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
+
+    servo1.moveFast(90);
+    Delay::ms(val);
+    servo1.fastClose();
+
+//    servo1.moveFast(90);
+//    Delay::ms(1000);
 //    servo1.fastClose();
+
+    while (1)
+    {
+//        solenoid.on();
+//        HAL_Delay(500);
+
+        solenoid.off();
+        HAL_Delay(500);
+    }
+
+
 
     while(1)
 	{
+
+//        servo1.moveFast(180);
+//        Delay::ms(1000);
+//        servo1.fastClose();
+//        Delay::ms(2000);
+
+
+//    	long value =hx.ReadRaw();
+////		value=hx.GetCalibratedWeight(value);
+//		debug.print("ADC Value: %d\r\n", value);
+//		Delay::ms(500);
+
 //    	servo1.TestSweep();
 
-    	    servo1.moveFast(0);
-    	    Delay::ms(500);
+//    	    servo1.moveFast(0);
+//    	    Delay::ms(500);
 //    	    servo1.moveFast(180);
 //    	       	    Delay::ms(500);
 //    	    servo1.fastClose();
