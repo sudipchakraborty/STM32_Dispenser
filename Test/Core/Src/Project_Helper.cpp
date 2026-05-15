@@ -78,7 +78,14 @@ const char* GetPIC_Type_String(PIC_Type_t pic_type)
         case DISP_6X6_GRAINS: return "DISP_6X6_GRAINS";
         case DISP_6X6_LIQUID: return "DISP_6X6_LIQUID";
         case DISP_6X6_PUREE:  return "DISP_6X6_PUREE";
-
+        //////////////////////////
+        case DISP_3X3_GRAINS_RICE:  return "DISP_3X3_GRAINS_RICE";
+        case DISP_3X3_GRAINS_DAL:  return "DISP_3X3_GRAINS_DAL";
+        case DISP_3X3_GRAINS_SALT:  return "DISP_3X3_GRAINS_SALT";
+        case DISP_3X3_GRAINS_TARKA:  return "DISP_3X3_GRAINS_TARKA";
+        case DISP_3X3_GRAINS_GREENCHILLI:  return "DISP_3X3_GRAINS_GREENCHILLI";
+        case DISP_3X3_GRAINS_OIL:  return "DISP_3X3_GRAINS_OIL";
+        /////////////////////////
         case IP:          return "IP";
         case CHIMNEY:     return "CHIMNEY";
         case DISHWASHER:  return "DISHWASHER";

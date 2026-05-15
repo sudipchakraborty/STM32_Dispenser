@@ -104,10 +104,11 @@ extern "C" void prj_Disp_init(void)
 
     while(1)
 	{
+    	  debug.print("HX711 Initialized\r\n");
 //        servo1.moveFast(180);
 //        Delay::ms(1000);
 //        servo1.fastClose();
-//        Delay::ms(2000);
+        Delay::ms(2000);
 
 
 //    	long value =hx.ReadRaw();

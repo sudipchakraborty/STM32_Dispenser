@@ -9,6 +9,14 @@ typedef enum
     DISP_6X6_GRAINS   = 104,
     DISP_6X6_LIQUID   = 105,
     DISP_6X6_PUREE    = 106,
+	//////////////////////////////
+	DISP_3X3_GRAINS_RICE = 107,
+	DISP_3X3_GRAINS_DAL = 108,
+	DISP_3X3_GRAINS_SALT = 109,
+	DISP_3X3_GRAINS_TARKA = 110,
+	DISP_3X3_GRAINS_GREENCHILLI= 111,
+	DISP_3X3_GRAINS_OIL = 112,
+	//////////////////////////////
 
     IP                = 26,
     CHIMNEY           = 27,

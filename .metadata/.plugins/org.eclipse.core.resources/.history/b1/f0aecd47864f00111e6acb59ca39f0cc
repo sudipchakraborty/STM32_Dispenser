@@ -89,21 +89,22 @@ extern "C" void prj_Disp_init(void)
 //    Delay::ms(1000);
 //    servo1.fastClose();
 
-//    while (1)
-//    {
-//    	  servo1.moveFast(0);
-////        solenoid.on();
-//        HAL_Delay(1000);
-////        servo1.moveFast(90);
-//
-////        solenoid.off();
-//        HAL_Delay(500);
-//    }
+    while (1)
+    {
+    	  servo1.moveFast(0);
+//        solenoid.on();
+        HAL_Delay(500);
+//        servo1.moveFast(90);
+
+//        solenoid.off();
+        HAL_Delay(500);
+    }
 
 
 
     while(1)
 	{
+
 //        servo1.moveFast(180);
 //        Delay::ms(1000);
 //        servo1.fastClose();
@@ -123,7 +124,7 @@ extern "C" void prj_Disp_init(void)
 //    	       	    Delay::ms(500);
 //    	    servo1.fastClose();
 
-		process_Real_Hardware();
+//		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________
