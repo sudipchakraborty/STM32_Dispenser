@@ -38,13 +38,6 @@ void process_command(Packet_t pkt);
 void process_Real_Hardware();
 void Demo_Process();
 
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount);
-
 #ifdef __cplusplus
 }
 #endif

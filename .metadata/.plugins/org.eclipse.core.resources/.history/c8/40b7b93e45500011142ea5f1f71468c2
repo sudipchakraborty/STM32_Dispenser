@@ -146,68 +146,19 @@ void process_Real_Hardware()
 			printPacket(&pkt,debug);
 			debug.print("\r\n==================================\r\n\r\n");
 
+
 			if(canP.ParseError(binaryBuffer, len, &pkt))
 			{
 				debug.print("Packet Receive Error \r\n");
 			}
 			else
 			{
-				if(pkt.address==DISP_3X3_GRAINS_RICE)
+				if(pkt.address==MyAddress)
 				{
 					debug.print("This is my Packet \r\n");
 					Delay::ms(1000);   // 1000 ms = 1 second delay
 					process_command(pkt);
 				}
-				else if(pkt.address==DISP_3X3_GRAINS_DAL)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-				else if(pkt.address==DISP_3X3_GRAINS_SALT)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-				else if(pkt.address==DISP_3X3_GRAINS_TARKA)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-				else if(pkt.address==DISP_3X3_GRAINS_GREENCHILLI)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-				else if(pkt.address==DISP_3X3_GRAINS_OIL)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-				else
-				{
-
-				}
-
-
-				 switch()
-
-						void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount);
-
-
-
-
-
-
 			}
 
 			can.reset();
@@ -377,41 +328,3 @@ char DispenseWeight(long target_grams, int OpenInDeg)
     }
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount)
-{
-
-}
-//______________________________________________________________________________________________________________________
-
-
-

@@ -8194,3 +8194,10 @@ Finished building: default.size.stdout
  
 Finished building: Test.list
  
+15:01:35 **** Incremental Build of configuration Debug for project Test ****
+make -j8 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  26988	     92	   2524	  29604	   73a4	Test.elf
+Finished building: default.size.stdout
+ 
