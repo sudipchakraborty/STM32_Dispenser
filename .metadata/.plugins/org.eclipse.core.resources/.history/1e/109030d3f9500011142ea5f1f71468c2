@@ -81,7 +81,7 @@ extern "C" void prj_Disp_init(void)
 //    Time(ms)=37.5×Grams
     int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
 
-    servo1.moveFast(90);
+    servo1.moveFast(0);
     Delay::ms(val);
     servo1.fastClose();
 
@@ -89,20 +89,21 @@ extern "C" void prj_Disp_init(void)
 //    Delay::ms(1000);
 //    servo1.fastClose();
 
-    while (1)
-    {
-        solenoid.on();
-        HAL_Delay(500);
-
-        solenoid.off();
-        HAL_Delay(500);
-    }
+//    while (1)
+//    {
+//    	  servo1.moveFast(0);
+////        solenoid.on();
+//        HAL_Delay(1000);
+////        servo1.moveFast(90);
+//
+////        solenoid.off();
+//        HAL_Delay(500);
+//    }
 
 
 
     while(1)
 	{
-
 //        servo1.moveFast(180);
 //        Delay::ms(1000);
 //        servo1.fastClose();
@@ -122,7 +123,7 @@ extern "C" void prj_Disp_init(void)
 //    	       	    Delay::ms(500);
 //    	    servo1.fastClose();
 
-//		process_Real_Hardware();
+		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________
@@ -145,19 +146,68 @@ void process_Real_Hardware()
 			printPacket(&pkt,debug);
 			debug.print("\r\n==================================\r\n\r\n");
 
-
 			if(canP.ParseError(binaryBuffer, len, &pkt))
 			{
 				debug.print("Packet Receive Error \r\n");
 			}
 			else
 			{
-				if(pkt.address==MyAddress)
+				if(pkt.address==DISP_3X3_GRAINS_RICE)
 				{
 					debug.print("This is my Packet \r\n");
 					Delay::ms(1000);   // 1000 ms = 1 second delay
 					process_command(pkt);
 				}
+				else if(pkt.address==DISP_3X3_GRAINS_DAL)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+				else if(pkt.address==DISP_3X3_GRAINS_SALT)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+				else if(pkt.address==DISP_3X3_GRAINS_TARKA)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+				else if(pkt.address==DISP_3X3_GRAINS_GREENCHILLI)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+				else if(pkt.address==DISP_3X3_GRAINS_OIL)
+				{
+					debug.print("This is my Packet \r\n");
+					Delay::ms(1000);   // 1000 ms = 1 second delay
+					process_command(pkt);
+				}
+				else
+				{
+
+				}
+
+
+				 switch()
+
+						void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount);
+						void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount);
+						void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount);
+						void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount);
+						void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount);
+						void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount);
+
+
+
+
+
+
 			}
 
 			can.reset();
@@ -327,3 +377,41 @@ char DispenseWeight(long target_grams, int OpenInDeg)
     }
 }
 //______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount)
+{
+
+}
+//______________________________________________________________________________________________________________________
+
+
+

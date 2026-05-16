@@ -154,62 +154,33 @@ void process_Real_Hardware()
 			{
 				if(pkt.address==DISP_3X3_GRAINS_RICE)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_RICE(pkt);
 				}
 				else if(pkt.address==DISP_3X3_GRAINS_DAL)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_DAL(pkt);
 				}
 				else if(pkt.address==DISP_3X3_GRAINS_SALT)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_SALT(pkt);
 				}
 				else if(pkt.address==DISP_3X3_GRAINS_TARKA)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_TARKA(pkt);
 				}
 				else if(pkt.address==DISP_3X3_GRAINS_GREENCHILLI)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_GREENCHILLI(pkt);
 				}
 				else if(pkt.address==DISP_3X3_GRAINS_OIL)
 				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
+					Dispense_DISP_3X3_GRAINS_OIL(pkt);
 				}
 				else
 				{
 
 				}
-
-
-				 switch()
-
-						void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount);
-						void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount);
-
-
-
-
-
-
 			}
-
 			can.reset();
 		}
 	else
@@ -232,46 +203,6 @@ void process_command(Packet_t pkt)
 		break;
 	////////////////////////
 	case Operation::write:
-
-//		if(pkt.command==2)	// Weight Based Dispense
-//		{
-//			value =HX711_ReadRaw();
-//			Previous_Weight=hx.GetCalibratedWeight(value);
-//			debug.print("Previous Weight: %d\r\n", Previous_Weight);
-//			Delay::ms(500);
-//
-//			servo1.moveFast(90);
-//			do
-//			{
-//				value =HX711_ReadRaw();
-//				Current_Weight=hx.GetCalibratedWeight(value);
-//				debug.print("current Weight: %d\r\n", Current_Weight);
-//				Delay::ms(200);
-//
-//				diff=Previous_Weight-150;
-//				debug.print("diff Weight: %d\r\n", diff);
-//
-//
-//			}while(Current_Weight>diff);
-
-//			servo1.fastClose();
-
-
-//			return;
-
-
-
-//			temp =HX711_ReadRaw();
-			//    		value=hx.GetCalibratedWeight(value);
-			//    		debug.print("ADC Value: %d\r\n", value);
-			//    		Delay::ms(500);
-
-
-//			debug.print("Triggered Dispense Based weight \r\n");
-//			servo1.moveFast(90);
-//			Delay::ms(3000);
-//			servo1.fastClose();
-//		}
 
 		if(pkt.command==5)
 		{
@@ -377,37 +308,37 @@ char DispenseWeight(long target_grams, int OpenInDeg)
     }
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_DAL(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_SALT(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_TARKA(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt)
 {
 
 }
 //______________________________________________________________________________________________________________________
-void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount)
+void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt)
 {
 
 }

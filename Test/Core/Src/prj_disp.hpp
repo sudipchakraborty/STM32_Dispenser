@@ -28,23 +28,20 @@ extern "C" {
 //#define PIC_REFRIGERATOR_No		24
 //#define PIC_GRINDER_No			25
 ///////////////////////////////////////////
-//
-
-
 void prj_Disp_init(void);
 void prj_Disp_loop(void);
 char DispenseWeight(long target_grams, int OpenInDeg);
 void process_command(Packet_t pkt);
 void process_Real_Hardware();
 void Demo_Process();
-
-void Dispense_DISP_3X3_GRAINS_RICE(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_DAL(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_SALT(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_TARKA(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_GREENCHILLI(unsigned int amount);
-void Dispense_DISP_3X3_GRAINS_OIL(unsigned int amount);
-
+///////////////////////////
+void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt);
+void Dispense_DISP_3X3_GRAINS_DAL(Packet_t pkt);
+void Dispense_DISP_3X3_GRAINS_SALT(Packet_t pkt);
+void Dispense_DISP_3X3_GRAINS_TARKA(Packet_t pkt);
+void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt);
+void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt);
+////////////////////////////
 #ifdef __cplusplus
 }
 #endif
