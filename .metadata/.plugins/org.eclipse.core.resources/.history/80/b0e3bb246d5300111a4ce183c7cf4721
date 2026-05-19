@@ -155,10 +155,10 @@ void process_Real_Hardware()
 			}
 			else
 			{
-				if(pkt.address==DISP_3X3_GRAINS_RICE)
-				{
-					Dispense_DISP_3X3_GRAINS_RICE(pkt);
-				}
+//				if(pkt.address==DISP_3X3_GRAINS_RICE)
+//				{
+//					Dispense_DISP_3X3_GRAINS_RICE(pkt);
+//				}
 				///////////////////////////////////////
 //				if(pkt.address==DISP_3X3_GRAINS_DAL)
 //				{
@@ -179,10 +179,10 @@ void process_Real_Hardware()
 //					Dispense_DISP_3X3_GRAINS_GREENCHILLI(pkt);
 //				}
 				//////////////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_OIL)
-//				{
-//					Dispense_DISP_3X3_GRAINS_OIL(pkt);
-//				}
+				if(pkt.address==DISP_3X3_GRAINS_OIL)
+				{
+					Dispense_DISP_3X3_GRAINS_OIL(pkt);
+				}
 				//////////////////////////////////////////////
 			}
 			can.reset();

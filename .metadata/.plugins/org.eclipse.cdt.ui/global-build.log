@@ -8324,3 +8324,567 @@ Finished building: default.size.stdout
  
 Finished building: Test.list
  
+15:07:42 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25992	     92	   2524	  28608	   6fc0	Test.elf
+Finished building: default.size.stdout
+ 
+15:12:22 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:134:14: warning: unused variable 'value' [-Wunused-variable]
+  134 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:227:32: warning: unused variable 'count' [-Wunused-variable]
+  227 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:196:18: warning: unused variable 'temp' [-Wunused-variable]
+  196 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:196:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  196 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:196:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  196 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:198:18: warning: unused variable 'diff' [-Wunused-variable]
+  198 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25548	     92	   2524	  28164	   6e04	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+15:20:36 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:134:14: warning: unused variable 'value' [-Wunused-variable]
+  134 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:226:32: warning: unused variable 'count' [-Wunused-variable]
+  226 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:195:18: warning: unused variable 'temp' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:195:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:195:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:197:18: warning: unused variable 'diff' [-Wunused-variable]
+  197 |         uint16_t diff;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp: In function 'void Dispense_DISP_3X3_GRAINS_RICE(Packet_t)':
+../Core/Src/prj_disp.cpp:313:38: error: expected unqualified-id before '[' token
+  313 |         debug.print("Data[0], ", pkt.[0]);
+      |                                      ^
+make: *** [Core/Src/subdir.mk:44: Core/Src/prj_disp.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+15:21:12 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:134:14: warning: unused variable 'value' [-Wunused-variable]
+  134 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:226:32: warning: unused variable 'count' [-Wunused-variable]
+  226 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:195:18: warning: unused variable 'temp' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:195:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:195:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  195 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:197:18: warning: unused variable 'diff' [-Wunused-variable]
+  197 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25580	     92	   2524	  28196	   6e24	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+15:33:59 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/Project_Helper.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Project_Helper.d" -MT"Core/Src/Project_Helper.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/Project_Helper.o"
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:229:32: warning: unused variable 'count' [-Wunused-variable]
+  229 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:198:18: warning: unused variable 'temp' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:198:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:198:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:200:18: warning: unused variable 'diff' [-Wunused-variable]
+  200 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25680	     92	   2564	  28336	   6eb0	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+15:34:51 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25680	     92	   2564	  28336	   6eb0	Test.elf
+Finished building: default.size.stdout
+ 
+15:40:24 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/Project_Helper.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Project_Helper.d" -MT"Core/Src/Project_Helper.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/Project_Helper.o"
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:229:32: warning: unused variable 'count' [-Wunused-variable]
+  229 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:198:18: warning: unused variable 'temp' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:198:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:198:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:200:18: warning: unused variable 'diff' [-Wunused-variable]
+  200 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25732	     92	   2564	  28388	   6ee4	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+15:46:08 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:229:32: warning: unused variable 'count' [-Wunused-variable]
+  229 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:198:18: warning: unused variable 'temp' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:198:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:198:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  198 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:200:18: warning: unused variable 'diff' [-Wunused-variable]
+  200 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+16:02:57 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+16:06:25 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:230:32: warning: unused variable 'count' [-Wunused-variable]
+  230 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:199:18: warning: unused variable 'temp' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:199:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:199:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:201:18: warning: unused variable 'diff' [-Wunused-variable]
+  201 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+17:30:52 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:232:32: warning: unused variable 'count' [-Wunused-variable]
+  232 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:201:18: warning: unused variable 'temp' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:201:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:201:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:203:18: warning: unused variable 'diff' [-Wunused-variable]
+  203 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+17:31:29 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:32:23 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:34:57 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:35:48 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:38:27 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:40:52 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:232:32: warning: unused variable 'count' [-Wunused-variable]
+  232 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:201:18: warning: unused variable 'temp' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:201:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:201:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  201 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:203:18: warning: unused variable 'diff' [-Wunused-variable]
+  203 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+17:49:24 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:233:32: warning: unused variable 'count' [-Wunused-variable]
+  233 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:202:18: warning: unused variable 'temp' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:202:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:202:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:204:18: warning: unused variable 'diff' [-Wunused-variable]
+  204 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+17:49:42 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:49:46 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+17:56:08 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:233:32: warning: unused variable 'count' [-Wunused-variable]
+  233 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:202:18: warning: unused variable 'temp' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:202:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:202:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:204:18: warning: unused variable 'diff' [-Wunused-variable]
+  204 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  21176	     92	   2516	  23784	   5ce8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+17:56:55 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:233:32: warning: unused variable 'count' [-Wunused-variable]
+  233 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:202:18: warning: unused variable 'temp' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:202:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:202:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  202 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:204:18: warning: unused variable 'diff' [-Wunused-variable]
+  204 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  21092	     92	   2516	  23700	   5c94	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+18:00:43 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:230:32: warning: unused variable 'count' [-Wunused-variable]
+  230 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:199:18: warning: unused variable 'temp' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:199:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:199:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:201:18: warning: unused variable 'diff' [-Wunused-variable]
+  201 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25612	     92	   2564	  28268	   6e6c	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+15:55:23 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25612	     92	   2564	  28268	   6e6c	Test.elf
+Finished building: default.size.stdout
+ 
+15:56:06 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
+../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
+../Core/Src/prj_disp.cpp:136:14: warning: unused variable 'value' [-Wunused-variable]
+  136 |         long value;
+      |              ^~~~~
+../Core/Src/prj_disp.cpp: In function 'void process_command(Packet_t)':
+../Core/Src/prj_disp.cpp:230:32: warning: unused variable 'count' [-Wunused-variable]
+  230 |                         size_t count = Packet_GetUint16Array(&pkt, values, 64);
+      |                                ^~~~~
+../Core/Src/prj_disp.cpp:199:18: warning: unused variable 'temp' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                  ^~~~
+../Core/Src/prj_disp.cpp:199:24: warning: unused variable 'Previous_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:199:41: warning: unused variable 'Current_Weight' [-Wunused-variable]
+  199 |         uint16_t temp, Previous_Weight, Current_Weight;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/prj_disp.cpp:201:18: warning: unused variable 'diff' [-Wunused-variable]
+  201 |         uint16_t diff;
+      |                  ^~~~
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"   -mcpu=cortex-m0 -T"D:\Dispenser\STM32_Dispenser\Test\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Test.elf
+ 
+arm-none-eabi-size  Test.elf 
+arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+Finished building: Test.list
+ 
+16:40:23 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 
+16:52:53 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-size  Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25688	     92	   2564	  28344	   6eb8	Test.elf
+Finished building: default.size.stdout
+ 

@@ -10,10 +10,8 @@
 
 
 
-void printPacket(const Packet_t* pkt, Debug debug, uint16_t* outBuffer)
+void printPacket(const Packet_t* pkt, Debug debug)
 {
-	uint8_t count=0;
-
     if (pkt == nullptr) {
         debug.print("Packet: NULL\r\n");
         return;
@@ -35,8 +33,7 @@ void printPacket(const Packet_t* pkt, Debug debug, uint16_t* outBuffer)
     for (uint8_t i = 0; i + 1 < pkt->dataLen; i += 2)
     {
         uint16_t value = ReadUInt16_BE(&pkt->data[i]);
-        outBuffer[count]=value;
-        count++;
+
         debug.print("%u", value);
 
         if (i < pkt->dataLen - 2)

@@ -81,10 +81,10 @@ extern "C" void prj_Disp_init(void)
 //
 
 //    Time(ms)=37.5×Grams
-//    int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
+    int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
 
-//    servo1.moveFast(0);
-//    Delay::ms(val);
+    servo1.moveFast(0);
+    Delay::ms(val);
     servo1.fastClose();
 
 //    servo1.moveFast(90);
@@ -93,13 +93,13 @@ extern "C" void prj_Disp_init(void)
 
 //    while (1)
 //    {
-////    	  servo1.moveFast(0);
+//    	  servo1.moveFast(0);
 ////        solenoid.on();
-////        HAL_Delay(1000);
-//////        servo1.moveFast(90);
-////
+//        HAL_Delay(1000);
+////        servo1.moveFast(90);
+//
 ////        solenoid.off();
-////        HAL_Delay(5000);
+//        HAL_Delay(500);
 //    }
 
 
@@ -159,17 +159,14 @@ void process_Real_Hardware()
 				{
 					Dispense_DISP_3X3_GRAINS_RICE(pkt);
 				}
-				///////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_DAL)
+//				else if(pkt.address==DISP_3X3_GRAINS_DAL)
 //				{
 //					Dispense_DISP_3X3_GRAINS_DAL(pkt);
 //				}
-				//////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_SALT)
+//				else if(pkt.address==DISP_3X3_GRAINS_SALT)
 //				{
 //					Dispense_DISP_3X3_GRAINS_SALT(pkt);
 //				}
-				////////////////////////////////////////
 //				else if(pkt.address==DISP_3X3_GRAINS_TARKA)
 //				{
 //					Dispense_DISP_3X3_GRAINS_TARKA(pkt);
@@ -178,12 +175,14 @@ void process_Real_Hardware()
 //				{
 //					Dispense_DISP_3X3_GRAINS_GREENCHILLI(pkt);
 //				}
-				//////////////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_OIL)
+//				else if(pkt.address==DISP_3X3_GRAINS_OIL)
 //				{
 //					Dispense_DISP_3X3_GRAINS_OIL(pkt);
 //				}
-				//////////////////////////////////////////////
+//				else
+//				{
+//
+//				}
 			}
 			can.reset();
 		}
@@ -314,155 +313,33 @@ char DispenseWeight(long target_grams, int OpenInDeg)
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt)
 {
-	 switch(data[1])
-	 {
-	 case 100:
-		  servo1.moveFast(90);
-		    Delay::ms(3200);
-		    servo1.fastClose();
-		 break;
-	 ////////////////////
-	 case 150:
-			  servo1.moveFast(90);
-			    Delay::ms(3200);
-			    servo1.fastClose();
-			 break;
-		 ////////////////////
-	 default:
-		 break;
-
-
-
-	 }
+	debug.print("Data[0]: %03u ===========\r\n", data[0]);
+	debug.print("Data[1]: %03u ===========\r\n", data[1]);
 }
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_DAL(Packet_t pkt)
 {
-	switch(data[1])
-		 {
-		 case 100:
-			  servo1.moveFast(90);
-			    Delay::ms(3200);
-			    servo1.fastClose();
-			 break;
-		 ////////////////////
-		 case 150:
-				  servo1.moveFast(90);
-				    Delay::ms(3200);
-				    servo1.fastClose();
-				 break;
-			 ////////////////////
-		 default:
-			 break;
 
-
-
-		 }
 }
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_SALT(Packet_t pkt)
 {
-	switch(data[1])
-		 {
-		 case 100:
-			  servo1.moveFast(90);
-			    Delay::ms(3200);
-			    servo1.fastClose();
-			 break;
-		 ////////////////////
-		 case 150:
-				  servo1.moveFast(90);
-				    Delay::ms(3200);
-				    servo1.fastClose();
-				 break;
-			 ////////////////////
-		 default:
-			 break;
 
-
-
-		 }
 }
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_TARKA(Packet_t pkt)
 {
-	switch(data[1])
-		 {
-		 case 100:
-			  servo1.moveFast(90);
-			    Delay::ms(3200);
-			    servo1.fastClose();
-			 break;
-		 ////////////////////
-		 case 150:
-				  servo1.moveFast(90);
-				    Delay::ms(3200);
-				    servo1.fastClose();
-				 break;
-			 ////////////////////
-		 default:
-			 break;
 
-
-
-		 }
 }
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt)
 {
-	switch(data[1])
-		 {
-		 case 100:
-			  servo1.moveFast(90);
-			    Delay::ms(3200);
-			    servo1.fastClose();
-			 break;
-		 ////////////////////
-		 case 150:
-				  servo1.moveFast(90);
-				    Delay::ms(3200);
-				    servo1.fastClose();
-				 break;
-			 ////////////////////
-		 default:
-			 break;
 
-
-
-		 }
 }
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt)
 {
 
-
-	        solenoid.on();
-	        	HAL_Delay(1000);
-	        solenoid.off();
-
-
-
-
-//	switch(data[1])
-//		 {
-//		 case 100:
-//			  servo1.moveFast(90);
-//			    Delay::ms(3200);
-//			    servo1.fastClose();
-//			 break;
-//		 ////////////////////
-//		 case 150:
-//				  servo1.moveFast(90);
-//				    Delay::ms(3200);
-//				    servo1.fastClose();
-//				 break;
-//			 ////////////////////
-//		 default:
-//			 break;
-//
-//
-//
-//		 }
 }
 //______________________________________________________________________________________________________________________
 
