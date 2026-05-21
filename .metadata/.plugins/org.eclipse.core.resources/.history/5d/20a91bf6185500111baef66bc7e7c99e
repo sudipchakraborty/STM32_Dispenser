@@ -61,6 +61,10 @@ long HX711_ReadRaw(void);
 #define TIMEOUT_LIMIT 20   // ~10 sec (500ms * 20)
 
 Solenoid solenoid(GPIOA, GPIO_PIN_6);
+
+uint16_t data[20];
+uint8_t binaryBuffer[64];
+char asciiBuffer[200];
 //////////////////////////////////////////////
 extern "C" void prj_Disp_init(void)
 {
@@ -71,6 +75,7 @@ extern "C" void prj_Disp_init(void)
     hx.Init();
     debug.print("HX711 Initialized\r\n");
     servo1.close();
+    can.reset();
 
 //    float Weight = 50;
 //
@@ -79,32 +84,51 @@ extern "C" void prj_Disp_init(void)
 //
 
 //    Time(ms)=37.5×Grams
-    int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
+//    int val=3200;	//1700;	//1650;		//1600;		//1535=30.7 * 50;
 
-    servo1.moveFast(0);
-    Delay::ms(val);
+//    servo1.moveFast(0);
+//    Delay::ms(val);
     servo1.fastClose();
 
 //    servo1.moveFast(90);
 //    Delay::ms(1000);
 //    servo1.fastClose();
 
-    while (1)
-    {
-    	  servo1.moveFast(0);
-//        solenoid.on();
-        HAL_Delay(500);
-//        servo1.moveFast(90);
+//    while (1)
+//    {
+//        servo1.moveFast(180);
+//        HAL_Delay(1000);
+//        servo1.fastClose();
+//        HAL_Delay(1000);
+//    }
 
-//        solenoid.off();
-        HAL_Delay(500);
-    }
+
+    can.reset();
+
+    uint16_t i=0;
+
+    for (i = 0; i < 200; i++)
+	{
+    	asciiBuffer[i]=0x00;
+	}
+
+    for (i = 0; i < 64; i++)
+   	{
+    	binaryBuffer[i]=0x00;
+   	}
+
+    for (i = 0; i < 20; i++)
+	{
+    	data[i]=0x00;
+	}
+
+
+
 
 
 
     while(1)
 	{
-
 //        servo1.moveFast(180);
 //        Delay::ms(1000);
 //        servo1.fastClose();
@@ -124,7 +148,7 @@ extern "C" void prj_Disp_init(void)
 //    	       	    Delay::ms(500);
 //    	    servo1.fastClose();
 
-//		process_Real_Hardware();
+		process_Real_Hardware();
 	}
 }
 //______________________________________________________________________________________________________________________
@@ -133,9 +157,8 @@ extern "C" void prj_Disp_init(void)
 void process_Real_Hardware()
 {
 	long value;
-	uint8_t binaryBuffer[64];
-	char asciiBuffer[200];
-	Packet_t pkt;
+
+	Packet_t pkt = {0};
 
 	if(can.received_CountBased())
 		{
@@ -144,24 +167,58 @@ void process_Real_Hardware()
 		 	uint16_t len = can.GetRawBuffer(binaryBuffer, sizeof(binaryBuffer));
 		    BufferToAsciiString(binaryBuffer, len,asciiBuffer,sizeof(asciiBuffer));
 		 	debug.print(asciiBuffer);
-			printPacket(&pkt,debug);
-			debug.print("\r\n==================================\r\n\r\n");
+
+//			printPacket(&pkt,debug,data);
+//			debug.print("\r\n==================================\r\n\r\n");
 
 
 			if(canP.ParseError(binaryBuffer, len, &pkt))
 			{
-				debug.print("Packet Receive Error \r\n");
+			    debug.print("Packet Receive Error \r\n");
 			}
 			else
 			{
-				if(pkt.address==MyAddress)
-				{
-					debug.print("This is my Packet \r\n");
-					Delay::ms(1000);   // 1000 ms = 1 second delay
-					process_command(pkt);
-				}
-			}
+			    printPacket(&pkt, debug, data);
+			    debug.print("\r\n==================================\r\n\r\n");
 
+
+//
+//			if(canP.ParseError(binaryBuffer, len, &pkt))
+//			{
+//				debug.print("Packet Receive Error \r\n");
+//			}
+//			else
+//			{
+				if(pkt.address==DISP_3X3_GRAINS_RICE)
+				{
+					Dispense_DISP_3X3_GRAINS_RICE(pkt);
+				}
+				///////////////////////////////////////
+//				if(pkt.address==DISP_3X3_GRAINS_DAL)
+//				{
+//					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+//				}
+				//////////////////////////////////////
+//				if(pkt.address==DISP_3X3_GRAINS_SALT)
+//				{
+//					Dispense_DISP_3X3_GRAINS_SALT(pkt);
+//				}
+				////////////////////////////////////////
+//				else if(pkt.address==DISP_3X3_GRAINS_TARKA)
+//				{
+//					Dispense_DISP_3X3_GRAINS_TARKA(pkt);
+//				}
+//				else if(pkt.address==DISP_3X3_GRAINS_GREENCHILLI)
+//				{
+//					Dispense_DISP_3X3_GRAINS_GREENCHILLI(pkt);
+//				}
+				//////////////////////////////////////////////
+//				if(pkt.address==DISP_3X3_GRAINS_OIL)
+//				{
+//					Dispense_DISP_3X3_GRAINS_OIL(pkt);
+//				}
+				//////////////////////////////////////////////
+			}
 			can.reset();
 		}
 	else
@@ -184,46 +241,6 @@ void process_command(Packet_t pkt)
 		break;
 	////////////////////////
 	case Operation::write:
-
-//		if(pkt.command==2)	// Weight Based Dispense
-//		{
-//			value =HX711_ReadRaw();
-//			Previous_Weight=hx.GetCalibratedWeight(value);
-//			debug.print("Previous Weight: %d\r\n", Previous_Weight);
-//			Delay::ms(500);
-//
-//			servo1.moveFast(90);
-//			do
-//			{
-//				value =HX711_ReadRaw();
-//				Current_Weight=hx.GetCalibratedWeight(value);
-//				debug.print("current Weight: %d\r\n", Current_Weight);
-//				Delay::ms(200);
-//
-//				diff=Previous_Weight-150;
-//				debug.print("diff Weight: %d\r\n", diff);
-//
-//
-//			}while(Current_Weight>diff);
-
-//			servo1.fastClose();
-
-
-//			return;
-
-
-
-//			temp =HX711_ReadRaw();
-			//    		value=hx.GetCalibratedWeight(value);
-			//    		debug.print("ADC Value: %d\r\n", value);
-			//    		Delay::ms(500);
-
-
-//			debug.print("Triggered Dispense Based weight \r\n");
-//			servo1.moveFast(90);
-//			Delay::ms(3000);
-//			servo1.fastClose();
-//		}
 
 		if(pkt.command==5)
 		{
@@ -329,3 +346,148 @@ char DispenseWeight(long target_grams, int OpenInDeg)
     }
 }
 //______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt)
+{
+	 switch(data[0])
+	 {
+	 case 100:
+	 case 200:
+	 case 300:
+		  servo1.moveFast(90);
+		    Delay::ms(3200);
+		    servo1.fastClose();
+		 break;
+	 ////////////////////
+	 case 150:
+			  servo1.moveFast(90);
+			    Delay::ms(3200);
+			    servo1.fastClose();
+			 break;
+		 ////////////////////
+	 default:
+		 break;
+
+
+
+	 }
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_DAL(Packet_t pkt)
+{
+	switch(data[0])
+		 {
+		 case 100:
+			  servo1.moveFast(90);
+			    Delay::ms(3200);
+			    servo1.fastClose();
+			 break;
+		 ////////////////////
+		 case 150:
+				  servo1.moveFast(90);
+				    Delay::ms(3200);
+				    servo1.fastClose();
+				 break;
+			 ////////////////////
+		 default:
+			 break;
+
+		 }
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_SALT(Packet_t pkt)
+{
+	switch(data[0])
+		 {
+		 case 100:
+			  servo1.moveFast(90);
+			    Delay::ms(3200);
+			    servo1.fastClose();
+			 break;
+		 ////////////////////
+		 case 150:
+				  servo1.moveFast(90);
+				    Delay::ms(3200);
+				    servo1.fastClose();
+				 break;
+			 ////////////////////
+		 default:
+			 break;
+		 }
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_TARKA(Packet_t pkt)
+{
+	switch(data[0])
+		 {
+		 case 100:
+			  servo1.moveFast(90);
+			    Delay::ms(3200);
+			    servo1.fastClose();
+			 break;
+		 ////////////////////
+		 case 150:
+				  servo1.moveFast(90);
+				    Delay::ms(3200);
+				    servo1.fastClose();
+				 break;
+			 ////////////////////
+		 default:
+			 break;
+		 }
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt)
+{
+	switch(data[0])
+		 {
+		 case 100:
+			  servo1.moveFast(90);
+			    Delay::ms(3200);
+			    servo1.fastClose();
+			 break;
+		 ////////////////////
+		 case 150:
+				  servo1.moveFast(90);
+				    Delay::ms(3200);
+				    servo1.fastClose();
+				 break;
+			 ////////////////////
+		 default:
+			 break;
+		 }
+}
+//______________________________________________________________________________________________________________________
+void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt)
+{
+	        solenoid.on();
+	        	HAL_Delay(1000);
+	        solenoid.off();
+
+
+
+
+//	switch(data[1])
+//		 {
+//		 case 100:
+//			  servo1.moveFast(90);
+//			    Delay::ms(3200);
+//			    servo1.fastClose();
+//			 break;
+//		 ////////////////////
+//		 case 150:
+//				  servo1.moveFast(90);
+//				    Delay::ms(3200);
+//				    servo1.fastClose();
+//				 break;
+//			 ////////////////////
+//		 default:
+//			 break;
+//
+//
+//
+//		 }
+}
+//______________________________________________________________________________________________________________________
+
+
+

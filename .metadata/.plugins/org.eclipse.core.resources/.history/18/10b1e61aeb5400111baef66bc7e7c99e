@@ -90,167 +90,54 @@ bool CanUartPolling::received()
 //_____________________________________________________________________________________________________________________
 bool CanUartPolling::received_CountBased()
 {
-    uint8_t byte;
+	    uint8_t byte;
 
-    // Receive 1 byte
-    if (HAL_UART_Receive(_huart, &byte, 1, 1) != HAL_OK)
-    {
-        return false;
-    }
+	    if (HAL_UART_Receive(_huart, &byte, 1, 1) != HAL_OK)
+	        return false;
 
-    //////////////////////////////////////////////////////
-    // BUFFER OVERFLOW PROTECTION
-    //////////////////////////////////////////////////////
-    if (rxIndex >= KBUS_MAX_PACKET)
-    {
-        reset();
-        return false;
-    }
+	    // Shift buffer if overflow
+	    if (rxIndex >= KBUS_MAX_PACKET)
+	        rxIndex = 0;
 
-    //////////////////////////////////////////////////////
-    // STORE BYTE
-    //////////////////////////////////////////////////////
-    rxBuffer[rxIndex++] = byte;
+	    rxBuffer[rxIndex++] = byte;
 
-    //////////////////////////////////////////////////////
-    // SEARCH HEADER (66 55)
-    //////////////////////////////////////////////////////
-    if (rxIndex >= 2)
-    {
-        bool headerFound = false;
+	    // 🔥 SEARCH HEADER ANYWHERE
+	    for (uint16_t i = 0; i < rxIndex - 1; i++)
+	    {
+	        if (rxBuffer[i] == 0x66 && rxBuffer[i + 1] == 0x55)
+	        {
+	            // Shift buffer to start from header
+	            uint16_t newLen = rxIndex - i;
 
-        for (uint16_t i = 0; i < (rxIndex - 1); i++)
-        {
-            if (rxBuffer[i] == 0x66 &&
-                rxBuffer[i + 1] == 0x55)
-            {
-                // Shift valid packet to beginning
-                if (i > 0)
-                {
-                    uint16_t newLen = rxIndex - i;
+	            memmove(rxBuffer, &rxBuffer[i], newLen);
+	            rxIndex = newLen;
 
-                    memmove(rxBuffer, &rxBuffer[i], newLen);
+	            break;
+	        }
+	    }
 
-                    rxIndex = newLen;
-                }
+	    // Get length
+	    if (rxIndex >= 3)
+	    {
+	        expectedLength = rxBuffer[2];
 
-                headerFound = true;
-                break;
-            }
-        }
+	        if (expectedLength < 3 || expectedLength > KBUS_MAX_PACKET)
+	        {
+	            rxIndex = 0;
+	            expectedLength = 0;
+	            return false;
+	        }
+	    }
 
-        //////////////////////////////////////////////////////
-        // NO HEADER FOUND
-        //////////////////////////////////////////////////////
-        if (!headerFound)
-        {
-            // Keep only last byte
-            if (rxIndex > 1)
-            {
-                rxBuffer[0] = rxBuffer[rxIndex - 1];
-                rxIndex = 1;
-            }
+	    // Full packet received
+	    if (expectedLength > 0 && rxIndex >= expectedLength)
+	    {
+	        return true;
+	    }
 
-            return false;
-        }
-    }
+	    return false;
 
-    //////////////////////////////////////////////////////
-    // WAIT UNTIL LENGTH BYTE ARRIVES
-    //////////////////////////////////////////////////////
-    if (rxIndex < 3)
-    {
-        return false;
-    }
-
-    //////////////////////////////////////////////////////
-    // GET EXPECTED LENGTH
-    //////////////////////////////////////////////////////
-    expectedLength = rxBuffer[2];
-
-    //////////////////////////////////////////////////////
-    // VALIDATE LENGTH
-    //////////////////////////////////////////////////////
-    if (expectedLength < 5 || expectedLength > KBUS_MAX_PACKET)
-    {
-        reset();
-        return false;
-    }
-
-    //////////////////////////////////////////////////////
-    // WAIT FOR COMPLETE PACKET
-    //////////////////////////////////////////////////////
-    if (rxIndex < expectedLength)
-    {
-        return false;
-    }
-
-    //////////////////////////////////////////////////////
-    // VERIFY FOOTER (77 88)
-    //////////////////////////////////////////////////////
-    if (rxBuffer[expectedLength - 2] != 0x77 ||
-        rxBuffer[expectedLength - 1] != 0x88)
-    {
-        reset();
-        return false;
-    }
-
-    //////////////////////////////////////////////////////
-    // VALID PACKET RECEIVED
-    //////////////////////////////////////////////////////
-    return true;
 }
-
-//bool CanUartPolling::received_CountBased()
-//{
-//	    uint8_t byte;
-//
-//	    if (HAL_UART_Receive(_huart, &byte, 1, 1) != HAL_OK)
-//	        return false;
-//
-//	    // Shift buffer if overflow
-//	    if (rxIndex >= KBUS_MAX_PACKET)
-//	        rxIndex = 0;
-//
-//	    rxBuffer[rxIndex++] = byte;
-//
-//	    // 🔥 SEARCH HEADER ANYWHERE
-//	    for (uint16_t i = 0; i < rxIndex - 1; i++)
-//	    {
-//	        if (rxBuffer[i] == 0x66 && rxBuffer[i + 1] == 0x55)
-//	        {
-//	            // Shift buffer to start from header
-//	            uint16_t newLen = rxIndex - i;
-//
-//	            memmove(rxBuffer, &rxBuffer[i], newLen);
-//	            rxIndex = newLen;
-//
-//	            break;
-//	        }
-//	    }
-//
-//	    // Get length
-//	    if (rxIndex >= 3)
-//	    {
-//	        expectedLength = rxBuffer[2];
-//
-//	        if (expectedLength < 3 || expectedLength > KBUS_MAX_PACKET)
-//	        {
-//	            rxIndex = 0;
-//	            expectedLength = 0;
-//	            return false;
-//	        }
-//	    }
-//
-//	    // Full packet received
-//	    if (expectedLength > 0 && rxIndex >= expectedLength)
-//	    {
-//	        return true;
-//	    }
-//
-//	    return false;
-//
-//}
 //_____________________________________________________________________________________________________________________
 uint16_t CanUartPolling::GetRawBuffer(uint8_t* outBuf, uint16_t maxLen)
 {

@@ -189,15 +189,15 @@ void process_Real_Hardware()
 //			}
 //			else
 //			{
-				if(pkt.address==DISP_3X3_GRAINS_RICE)
-				{
-					Dispense_DISP_3X3_GRAINS_RICE(pkt);
-				}
-				///////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_DAL)
+//				if(pkt.address==DISP_3X3_GRAINS_RICE)
 //				{
-//					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+//					Dispense_DISP_3X3_GRAINS_RICE(pkt);
 //				}
+				///////////////////////////////////////
+				if(pkt.address==DISP_3X3_GRAINS_DAL)
+				{
+					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+				}
 				//////////////////////////////////////
 //				if(pkt.address==DISP_3X3_GRAINS_SALT)
 //				{
