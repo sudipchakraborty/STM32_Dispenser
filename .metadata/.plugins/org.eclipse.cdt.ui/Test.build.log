@@ -1,4 +1,4 @@
-18:59:38 **** Incremental Build of configuration Debug for project Test ****
+16:51:29 **** Incremental Build of configuration Debug for project Test ****
 make -j12 all 
 arm-none-eabi-g++ "../Core/Src/prj_disp.cpp" -mcpu=cortex-m0 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F030x8 -c -I../Core/Inc -I"D:/Dispenser/STM32_Dispenser/Test/lib" -I../Drivers/STM32F0xx_HAL_Driver/Inc -I../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/prj_disp.d" -MT"Core/Src/prj_disp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/prj_disp.o"
 ../Core/Src/prj_disp.cpp: In function 'void process_Real_Hardware()':
@@ -27,11 +27,11 @@ Finished building target: Test.elf
 arm-none-eabi-size  Test.elf 
 arm-none-eabi-objdump -h -S Test.elf  > "Test.list"
    text	   data	    bss	    dec	    hex	filename
-  26156	     92	   2828	  29076	   7194	Test.elf
+  26000	     92	   2828	  28920	   70f8	Test.elf
 Finished building: default.size.stdout
  
 Finished building: Test.list
  
 
-18:59:39 Build Finished. 0 errors, 6 warnings. (took 1s.212ms)
+16:51:30 Build Finished. 0 errors, 6 warnings. (took 814ms)
 

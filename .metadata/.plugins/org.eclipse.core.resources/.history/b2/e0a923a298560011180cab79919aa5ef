@@ -194,10 +194,10 @@ void process_Real_Hardware()
 //					Dispense_DISP_3X3_GRAINS_RICE(pkt);
 //				}
 				///////////////////////////////////////
-				if(pkt.address==DISP_3X3_GRAINS_DAL)
-				{
-					Dispense_DISP_3X3_GRAINS_DAL(pkt);
-				}
+//				if(pkt.address==DISP_3X3_GRAINS_DAL)
+//				{
+//					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+//				}
 				//////////////////////////////////////
 //				if(pkt.address==DISP_3X3_GRAINS_SALT)
 //				{
@@ -213,10 +213,10 @@ void process_Real_Hardware()
 //					Dispense_DISP_3X3_GRAINS_GREENCHILLI(pkt);
 //				}
 				//////////////////////////////////////////////
-//				if(pkt.address==DISP_3X3_GRAINS_OIL)
-//				{
-//					Dispense_DISP_3X3_GRAINS_OIL(pkt);
-//				}
+				if(pkt.address==DISP_3X3_GRAINS_OIL)
+				{
+					Dispense_DISP_3X3_GRAINS_OIL(pkt);
+				}
 				//////////////////////////////////////////////
 			}
 			can.reset();
@@ -473,10 +473,6 @@ void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt)
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt)
 {
-	solenoid.on();
-		HAL_Delay(data[0]*1000);
-	solenoid.off();
-	return;
 
 	 switch(data[0])
 		 {

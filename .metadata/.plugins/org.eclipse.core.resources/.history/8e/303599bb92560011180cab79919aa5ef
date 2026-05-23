@@ -189,15 +189,15 @@ void process_Real_Hardware()
 //			}
 //			else
 //			{
-//				if(pkt.address==DISP_3X3_GRAINS_RICE)
-//				{
-//					Dispense_DISP_3X3_GRAINS_RICE(pkt);
-//				}
-				///////////////////////////////////////
-				if(pkt.address==DISP_3X3_GRAINS_DAL)
+				if(pkt.address==DISP_3X3_GRAINS_RICE)
 				{
-					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+					Dispense_DISP_3X3_GRAINS_RICE(pkt);
 				}
+				///////////////////////////////////////
+//				if(pkt.address==DISP_3X3_GRAINS_DAL)
+//				{
+//					Dispense_DISP_3X3_GRAINS_DAL(pkt);
+//				}
 				//////////////////////////////////////
 //				if(pkt.address==DISP_3X3_GRAINS_SALT)
 //				{
@@ -361,14 +361,14 @@ void Dispense_DISP_3X3_GRAINS_RICE(Packet_t pkt)
 		 ////////////////////
 	 case 50:		//
 			  servo1.moveFast(90);
-				  Delay::ms(850); // 1000
+				  Delay::ms(725); // 1000
 			  servo1.fastClose();
 			 break;
 			 ////////////////////
 
 	 case 100:
 		  servo1.moveFast(90);
-		  	  Delay::ms(1700); // 1000
+		  	  Delay::ms(1650); // 1000
 		  servo1.fastClose();
 		 break;
 	 ////////////////////
@@ -473,48 +473,9 @@ void Dispense_DISP_3X3_GRAINS_GREENCHILLI(Packet_t pkt)
 //______________________________________________________________________________________________________________________
 void Dispense_DISP_3X3_GRAINS_OIL(Packet_t pkt)
 {
-	solenoid.on();
-		HAL_Delay(data[0]*1000);
-	solenoid.off();
-	return;
-
-	 switch(data[0])
-		 {
-
-//		 case 25:		// 8.9
-//				  servo1.moveFast(90);
-//				  	  Delay::ms(360); // 1000
-//				  servo1.fastClose();
-//				 break;
-//			 ////////////////////
-//		 case 50:		//
-//				  servo1.moveFast(90);
-//					  Delay::ms(850); // 1000
-//				  servo1.fastClose();
-//				 break;
-//				 ////////////////////
-
-		 case 100:
-				solenoid.on();
-				      HAL_Delay(20000);
-				solenoid.off();
-
-			 break;
-		 ////////////////////
-//		 case 150:
-//				  servo1.moveFast(90);
-//				    Delay::ms(3200);
-//				    servo1.fastClose();
-//				 break;
-//			 ////////////////////
-		 default:
-			 break;
-
-
-
-		 }
-
-
+	        solenoid.on();
+	        	HAL_Delay(1000);
+	        solenoid.off();
 
 
 
